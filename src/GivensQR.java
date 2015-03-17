@@ -23,36 +23,42 @@ public class GivensQR {
         double s;
 
         for(int j = 0; j < matrix.getColumnDimension(); j++) {
-            int pivot = 0;
+            int pivot = j;
             for(int i = pivot + 1; i < matrix.getRowDimension(); i++) {
                 double b = matrix.get(i, j);
-                double a = matrix.get(pivot, pivot);
-                r = Math.sqrt(b*b + a*a);
-                c = a / r;
-                s = -b / r;
+                if(b != 0) {
+                    double a = matrix.get(pivot, pivot);
+                    r = Math.sqrt(b * b + a * a);
+                    c = a / r;
+                    s = -b / r;
 
-                double[][] newG = new double[matrix.getRowDimension()][matrix.getColumnDimension()];
-                for(int k = 0; (k != pivot || k!= j) && k < matrix.getColumnDimension(); k++) {
-                    newG[k][k] = 1.;
+                    double[][] newG = new double[matrix.getRowDimension()][matrix.getColumnDimension()];
+                    for (int k = 0; k < matrix.getColumnDimension(); k++) {
+                        newG[k][k] = 1.;
+                    }
+                    newG[pivot][pivot] = c;
+                    newG[i][i] = c;
+                    newG[j][i] = -s;
+                    if (i > j) {
+                        newG[i][j] = s;
+                    }
+
+                    Matrix newGivens = new Matrix(newG);
+                    Givens.add(newGivens.transpose());
+
+                    matrix = newGivens.arrayTimes(matrix);
                 }
-                newG[pivot][pivot] = c;
-                newG[j][j] = c;
-                newG[j][pivot] = -s;
-                newG[pivot][j] = s;
-
-                Matrix newGivens = new Matrix(newG);
-                Givens.add(newGivens.transpose());
-
-                matrix = newGivens.arrayTimes(matrix);
             }
         }
         return matrix;
     }
 
     public Matrix findQ() {
-        Matrix Q = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
+        Matrix Q = Givens.get(0);
         for(int i = 0; i < Givens.size(); i++) {
-            Q = Givens.get(i);
+            if(i == 0) {
+                Q = Givens.get(i);
+            }
             if(i + 1 < Givens.size()) {
                 Q = Q.arrayTimes(Givens.get(i + 1));
             }
