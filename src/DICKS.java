@@ -7,16 +7,27 @@ public class DICKS {
     public static void main(String[] args) {
         NumberFormat nf = NumberFormat.getInstance();
         System.out.println(67);
-        double[][] array = {{1.,2.,3},{4.,5.,6.},{7.,8.,10.}};
-        Matrix A = new Matrix(array);
-        Matrix b = Matrix.random(3,1);
-        Matrix x = A.solve(b);
-        A.print(nf, 3);
-        System.out.print(" * ");
-        x.print(nf, 1);
-        System.out.print(" = ");
-        b.print(nf, 1);
+        double[][] hilbert = createHilbert(4, 4);
 
+        Matrix Hilbert = new Matrix(hilbert);
+        Hilbert.print(nf, 4);
+
+        GivensQR givensQR = new GivensQR(Hilbert);
+
+        givensQR.Q.print(nf, 4);
+        givensQR.R.print(nf, 4);
+
+
+    }
+
+    public static double[][] createHilbert(int rows, int columns) {
+        double[][] hilbert = new double[rows][columns];
+        for(int i = 0; i < rows; i++) {
+            for (int j =0; j < columns; j++) {
+                hilbert[i][j] = 1. / (i + j + 1.);
+            }
+        }
+        return hilbert;
     }
 
 
