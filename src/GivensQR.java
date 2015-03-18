@@ -17,23 +17,23 @@ public class GivensQR {
         Q = findQ();
     }
 
-    public Matrix findR(Matrix matrix) {
+    public Matrix findR(Matrix mat) {
         double r;
         double c;
         double s;
 
-        for(int j = 0; j < matrix.getColumnDimension(); j++) {
+        for(int j = 0; j < mat.getColumnDimension(); j++) {
             int pivot = j;
-            for(int i = pivot + 1; i < matrix.getRowDimension(); i++) {
-                double b = matrix.get(i, j);
+            for(int i = pivot + 1; i < mat.getRowDimension(); i++) {
+                double b = mat.get(i, j);
                 if(b != 0) {
-                    double a = matrix.get(pivot, pivot);
+                    double a = mat.get(pivot, pivot);
                     r = Math.sqrt(b * b + a * a);
                     c = a / r;
                     s = -b / r;
 
-                    double[][] newG = new double[matrix.getRowDimension()][matrix.getColumnDimension()];
-                    for (int k = 0; k < matrix.getColumnDimension(); k++) {
+                    double[][] newG = new double[mat.getRowDimension()][mat.getColumnDimension()];
+                    for (int k = 0; k < mat.getColumnDimension(); k++) {
                         newG[k][k] = 1.;
                     }
                     newG[pivot][pivot] = c;
@@ -46,11 +46,11 @@ public class GivensQR {
                     Matrix newGivens = new Matrix(newG);
                     Givens.add(newGivens.transpose());
 
-                    matrix = newGivens.arrayTimes(matrix);
+                    mat = newGivens.times(mat);
                 }
             }
         }
-        return matrix;
+        return mat;
     }
 
     public Matrix findQ() {
@@ -60,7 +60,7 @@ public class GivensQR {
                 Q = Givens.get(i);
             }
             if(i + 1 < Givens.size()) {
-                Q = Q.arrayTimes(Givens.get(i + 1));
+                Q = Q.times(Givens.get(i + 1));
             }
 
         }
