@@ -3,9 +3,10 @@
  */
 import Jama.*;
 import java.text.NumberFormat;
-public class DICKS {
+public class Driver {
     public static void main(String[] args) {
         NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(5);
         System.out.println(67);
         double[][] hilbert = createHilbert(4, 4);
 
@@ -16,6 +17,8 @@ public class DICKS {
 
         givensQR.Q.print(nf, 4);
         givensQR.R.print(nf, 4);
+        Matrix A = givensQR.Q.times(givensQR.R);
+        A.print(nf, 4);
 
 
     }

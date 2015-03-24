@@ -9,12 +9,14 @@ public class GivensQR {
     ArrayList<Matrix> Givens;
     public Matrix Q;
     public Matrix R;
+    public static double error;
 
     GivensQR(Matrix matrix) {
         this.matrix = matrix;
         Givens = new ArrayList<Matrix>(10);
         R = findR(this.matrix);
         Q = findQ();
+        this.error = findError();
     }
 
     public Matrix findR(Matrix mat) {
@@ -30,7 +32,7 @@ public class GivensQR {
                     double a = mat.get(pivot, pivot);
                     r = Math.sqrt(b * b + a * a);
                     c = a / r;
-                    s = -b / r;
+                    s = (-1. * b) / r;
 
                     double[][] newG = new double[mat.getRowDimension()][mat.getColumnDimension()];
                     for (int k = 0; k < mat.getColumnDimension(); k++) {
@@ -38,7 +40,7 @@ public class GivensQR {
                     }
                     newG[pivot][pivot] = c;
                     newG[i][i] = c;
-                    newG[j][i] = -s;
+                    newG[j][i] = -1. * s;
                     if (i > j) {
                         newG[i][j] = s;
                     }
@@ -46,7 +48,7 @@ public class GivensQR {
                     Matrix newGivens = new Matrix(newG);
                     Givens.add(newGivens.transpose());
 
-                    mat = newGivens.times(mat);
+                    mat = Multiply.multiply(newGivens, mat);
                 }
             }
         }
@@ -60,12 +62,22 @@ public class GivensQR {
                 Q = Givens.get(i);
             }
             if(i + 1 < Givens.size()) {
-                Q = Q.times(Givens.get(i + 1));
+                Q = Multiply.multiply(Q, Givens.get(i + 1));
             }
 
         }
 
         return Q;
     }
+    public double findError() {
+        error = Norm.getNorm((Multiply.multiply(Q,R).minus(matrix)));
+        return error;
+    }
+
+    public double getError() {
+        return this.error;
+    }
+
+
 
 }
