@@ -43,12 +43,17 @@ public class GivensQR {
                     newG[j][i] = -1. * s;
                     if (i > j) {
                         newG[i][j] = s;
+                    } else {
+                        newG[i][j] = -1 * s;
                     }
 
                     Matrix newGivens = new Matrix(newG);
                     Givens.add(newGivens.transpose());
 
                     mat = Multiply.multiply(newGivens, mat);
+                } else {
+                    double[][] newG = new double[mat.getRowDimension()][mat.getColumnDimension()];
+
                 }
             }
         }

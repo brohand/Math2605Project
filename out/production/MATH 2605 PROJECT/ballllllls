@@ -1,0 +1,432 @@
+import java.util.Comparator;
+import java.util.Random;
+import java.util.LinkedList;
+
+public class Sorting {
+
+    /**
+     * Implement bubble sort.
+     *
+     * It should be:
+     * in-place
+     * stable
+     *
+     * Have a worst case running time of:
+     * O(n^2)
+     *
+     * And a best case running time of:
+     * O(n)
+     *
+     * Any duplicates in the array should be in the same relative position
+     *  after sorting as they were before sorting.
+     *
+     * @param <T>        data type to sort
+     * @param arr        the array that must be sorted after the method runs
+     * @param comparator the Comparator used to compare the data in arr
+     * @throws IllegalArgumentException if the array or comparator is null
+     */
+    public static <T> void bubblesort(T[] arr, Comparator<T> comparator) {
+        if (arr == null || comparator == null) {
+            throw new IllegalArgumentException("Array or Comparator is null");
+        }
+        int swaps;
+        do {
+            swaps = 0;
+            for (int i = 0; i + 1 < arr.length; i++) {
+                if (comparator.compare(arr[i], arr[i + 1]) > 0) {
+                    swaps += 1;
+                    T temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
+                }
+            }
+        } while (swaps != 0);
+
+
+    }
+
+    /**
+     * Implement insertion sort.
+     *
+     * It should be:
+     * in-place
+     * stable
+     *
+     * Have a worst case running time of:
+     * O(n^2)
+     *
+     * And a best case running time of:
+     * O(n)
+     *
+     * Any duplicates in the array should be in the same relative position after
+     * sorting as they were before sorting.
+     *
+     * @param <T>        data type to sort
+     * @param arr        the array that must be sorted after the method runs
+     * @param comparator the Comparator used to compare the data in arr
+     * @throws IllegalArgumentException if the array or comparator is null
+     */
+    public static <T> void insertionsort(T[] arr, Comparator<T> comparator) {
+        if (arr == null || comparator == null) {
+            throw new IllegalArgumentException("Array or Comparator is null");
+        }
+        for (int i = 1; i < arr.length; i++) {
+            int j = i;
+            while (j > 0 && comparator.compare(arr[j - 1], arr[j]) > 0) {
+                T temp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = temp;
+                j--;
+            }
+        }
+
+
+    }
+
+    /**
+     * Implement shell sort.
+     *
+     * It should be:
+     * in-place
+     *
+     * Have a worst case running time of:
+     * O(n^2)
+     *
+     * And a best case running time of:
+     * O(n log(n))
+     *
+     * Note that there may be duplicates in the array.
+     *
+     * @param <T>        data type to sort
+     * @param arr        the array that must be sorted after the method runs
+     * @param comparator the Comparator used to compare the data in arr
+     * @throws IllegalArgumentException if the array or comparator is null
+     */
+    public static <T> void shellsort(T[] arr, Comparator<T> comparator) {
+        if (arr == null || comparator == null) {
+            throw new IllegalArgumentException("Array or Comparator is null");
+        }
+
+
+        int gap = 701; // arbitrary
+        for (int i = 1; gap > 0; i++) {
+            gap = (int) Math.floor((arr.length) / Math.pow(2, i));
+            for (int j = 0; j < arr.length - gap; j++) {
+                for (int k = j; k < arr.length - gap; k += gap) {
+                    if (comparator.compare(arr[k + gap], arr[k]) < 0) {
+                        T temp = arr[k];
+                        arr[k] = arr[k + gap];
+                        arr[k + gap] = temp;
+                    }
+                }
+            }
+            if (gap == 1) {
+                return;
+            }
+
+
+        }
+    }
+
+    /**
+     * Implement quick sort.
+     *
+     * Use the provided random object to select your pivots.
+     * For example if you need a pivot between a (inclusive)
+     * and b (exclusive) where b > a, use the following code:
+     *
+     * int pivotIndex = r.nextInt(b - a) + a;
+     *
+     * It should be:
+     * in-place
+     *
+     * Have a worst case running time of:
+     * O(n^2)
+     *
+     * And a best case running time of:
+     * O(n log n)
+     *
+     * Note that there may be duplicates in the array.
+     *
+     * @param <T>        data type to sort
+     * @param arr        the array that must be sorted after the method runs
+     * @param comparator the Comparator used to compare the data in arr
+     * @param rand       the Random object used to select pivots
+     * @throws IllegalArgumentException if the array or comparator or rand is
+     *                                  null
+     */
+    public static <T> void quicksort(T[] arr, Comparator<T> comparator,
+                                     Random rand) {
+        if (arr == null || comparator == null || rand == null) {
+            throw new IllegalArgumentException("Array, rand or Comparator is null");
+        }
+
+        quickSort(arr, rand, 0, arr.length - 1, comparator);
+
+
+    }
+
+    /**
+     *  partitions an array, then runs itself over its subdivisions recursively
+     * @param arr array
+     * @param rand random
+     * @param left left index
+     * @param right right index
+     * @param comparator comparator
+     * @param <T> Generic
+     */
+    private static <T> void quickSort(T[] arr, Random rand, int left, int right, Comparator<T> comparator) {
+        if (left < right) {
+
+            int p = partition(arr, rand, left, right, comparator);
+            if (left < p - 1) {
+                quickSort(arr, rand, left, p - 1, comparator);
+            }
+            if (p < right) {
+                quickSort(arr, rand, p, right, comparator);
+            }
+
+        }
+    }
+
+    /**
+     *
+     * @param arr array
+     * @param rand random
+     * @param left left index
+     * @param right right index
+     * @param comparator comparator
+     * @param <T> Generic
+     * @return an index that determines further partitions of the array
+     */
+    private static <T> int partition(T[] arr, Random rand, int left, int right, Comparator<T> comparator) {
+        int pivot = Math.abs(rand.nextInt(right - left) + left);
+        T pivotVal = arr[pivot];
+        int i = left;
+        int j = right;
+        while (i <= j) {
+            while (comparator.compare(arr[i], pivotVal) < 0) {
+                i++;
+            }
+            while (comparator.compare(arr[j], pivotVal) > 0) {
+                j--;
+            }
+            if (i <= j) {
+                T temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                i++;
+                j--;
+            }
+
+        }
+
+
+        return i;
+
+    }
+
+    /**
+     * Implement merge sort.
+     *
+     * It should be:
+     * stable
+     *
+     * Have a worst case running time of:
+     * O(n log n)
+     *
+     * And a best case running time of:
+     * O(n log n)
+     *
+     * You can create more arrays to run mergesort, but at the end,
+     * everything should be merged back into the original T[]
+     * which was passed in.
+     *
+     * ********************* IMPORTANT ************************
+     * FAILURE TO DO SO MAY CAUSE ClassCastException AND CAUSE
+     * YOUR METHOD TO FAIL ALL THE TESTS FOR MERGE SORT
+     * ********************************************************
+     *
+     * Any duplicates in the array should be in the same relative position after
+     * sorting as they were before sorting.
+     *
+     * @param <T>        data type to sort
+     * @param arr        the array to be sorted
+     * @param comparator the Comparator used to compare the data in arr
+     * @throws IllegalArgumentException if the array or comparator is null
+     */
+    public static <T> void mergesort(T[] arr, Comparator<T> comparator) {
+        if (arr == null || comparator == null) {
+            throw new IllegalArgumentException("Array or Comparator is null");
+        }
+
+        T[] sortedArray = split(arr, comparator);
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sortedArray[i];
+        }
+
+
+    }
+
+    /**
+     * recursively splits array into smaller arrays until their size is 1
+     * it then merges the smaller arrays
+     * @param arr an array
+     * @param comparator comparator
+     * @param <T> Generic
+     * @return merged array of two subdivisions
+     */
+    public static <T> T[] split(T[] arr, Comparator<T> comparator) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        int middle = arr.length / 2;
+
+        T[] a = (T[]) new Object[middle];
+        int bSize = (arr.length % 2 == 0) ? middle : middle + 1;
+        T[] b = (T[]) new Object[bSize];
+
+        for (int i = 0; i < middle; i++) {
+            a[i] = arr[i];
+        }
+
+        for (int i = middle; i < arr.length; i++) {
+            b[i - middle] = arr[i];
+        }
+
+        a = split(a, comparator);
+        b = split(b, comparator);
+
+        return merge(a, b, comparator);
+
+
+    }
+
+    /**
+     * combines two arrays into one based on
+     * which current element in both arrays are smaller
+     * @param a left array
+     * @param b right array
+     * @param comparator comparator
+     * @param <T> Generic
+     * @return merged array of two arrays
+     */
+    public static <T> T[] merge(T[] a, T[] b, Comparator<T> comparator) {
+        T[] mergedarray = (T[]) new Object[a.length + b.length];
+        int leftHead = 0;
+        int rightHead = 0;
+        int i = 0;
+        while (leftHead < a.length && rightHead < b.length) {
+            if (comparator.compare(a[leftHead], b[rightHead]) <= 0) {
+                mergedarray[i] = a[leftHead];
+                leftHead++;
+            } else {
+                mergedarray[i] = b[rightHead];
+                rightHead++;
+            }
+            i++;
+        }
+
+        while (leftHead < a.length) {
+            mergedarray[i] = a[leftHead];
+            leftHead++;
+            i++;
+        }
+        while (rightHead < b.length) {
+            mergedarray[i] = b[rightHead];
+            rightHead++;
+            i++;
+
+        }
+
+        return mergedarray;
+
+
+    }
+
+
+    /**
+     * Implement radix sort.
+     *
+     * Remember you CANNOT convert the ints to strings.
+     *
+     * It should be:
+     * stable
+     *
+     * Have a worst case running time of:
+     * O(kn)
+     *
+     * And a best case running time of:
+     * O(kn)
+     *
+     * Any duplicates in the array should be in the same relative position after
+     * sorting as they were before sorting.
+     *
+     * You may use an ArrayList or LinkedList if you wish,
+     * but it may only be used inside radixsort and any radix sort helpers
+     * Do NOT use these classes with other sorts.
+     *
+     * @param arr the array to be sorted
+     * @return the sorted array
+     * @throws IllegalArgumentException if the array is null
+     */
+    public static int[] radixsort(int[] arr) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Array is null");
+        }
+
+        LinkedList<Integer>[] buckets = new LinkedList[20];
+        for (int i = 0; i < 20; i++) {
+            buckets[i] = new LinkedList<Integer>();
+        }
+        int place = 0;
+        int negZeroSize = buckets[9].size();
+        int posZeroSize = buckets[10].size();
+        while (negZeroSize + posZeroSize < arr.length) {
+            for (int i = 0; i < arr.length; i++) {
+                int bucket = getBucket(arr[i], place);
+                if (bucket > 0) {
+                    buckets[bucket + 10].add(arr[i]);
+                } else if (bucket < 0) {
+                    buckets[bucket + 9].add(arr[i]);
+                } else {
+                    if (arr[i] >= 0) {
+                        buckets[10].add(arr[i]);
+                    } else {
+                        buckets[9].add(arr[i]);
+                    }
+                }
+            }
+            negZeroSize = buckets[9].size();
+            posZeroSize = buckets[10].size();
+            int currPos = 0;
+            for (int i = 0; i < buckets.length; i++) {
+                if (buckets[i] != null) {
+                    Integer value;
+                    while ((value = buckets[i].poll()) != null) {
+                        arr[currPos++] = value;
+                    }
+                }
+            }
+            place++;
+        }
+        return arr;
+
+    }
+
+    /**
+     * finds the bucket index of a number
+     * based on a digit index
+     * @param x number
+     * @param place digit index
+     * @return bucket index number
+     */
+    private static Integer getBucket(int x, int place) {
+        int modDivisor = (int) Math.pow(10, place + 1);
+        int remainder = x % modDivisor;
+        int bucket = remainder / (modDivisor / 10);
+        return bucket;
+    }
+}
