@@ -23,11 +23,11 @@ public class solve_qr_b {
     //For testing
     public static void main(String[] args) {
         double[][] testArr = {{-1,0},{0,1}};
-         Matrix testMat = new Matrix(testArr);//Driver.createHilbert(4,4);
+         Matrix testMat = Driver.createHilbert(4,4);
         testMat.print(2,2);
         System.out.println();
 
-        double[][] b = {{0.0464159},{0.0464159}};
+        double[][] b = {{0.0464159},{0.0464159},{0.0464159},{0.0464159}};
 
         Matrix correctSol = testMat.solve(new Matrix(b));
         correctSol.print(1,4);
