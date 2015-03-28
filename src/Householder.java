@@ -8,6 +8,7 @@ import Jama.Matrix;
  */
 public class Householder {
 
+
     /**
      * Gets the Q matrix for QR factorization
      * uses Householders Reflections
@@ -158,5 +159,18 @@ public class Householder {
             }
         }
         return new Matrix(identity);
+    }
+
+    /**
+     * Gets error of Householder calculation
+     * ||QR - Q||
+     *
+     * @param a Matrix to find error of
+     * @return error in Householder calculation
+     */
+    public static double error(Matrix a) {
+        Matrix q = getQ(a);
+        Matrix r = getR(a);
+        return Norm.getNorm(q.times(r).minus(a));
     }
 }

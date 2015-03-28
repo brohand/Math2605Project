@@ -97,4 +97,14 @@ public class HouseholderTestTam {
         System.out.println("Hard Q expected");
         (new Matrix(q)).print(4,4);
     }
+    @Test
+    public void testError() throws Exception {
+        double[][] a = {
+                {1, 0.5, 0.333333, 0.25},
+                {0.5, 0.333333, 0.25, 0.2},
+                {0.333333, 0.25, 0.2, 0.166667},
+                {0.25, 0.2, 0.166667, 0.142857}
+        };
+        System.out.println("Error: " + Householder.error(new Matrix(a)));
+    }
 }
