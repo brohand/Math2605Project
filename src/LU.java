@@ -31,9 +31,6 @@ public class LU {
             for (int i = 1; i < n; i++) {
                 if (j < i) {
                     double temp = -1 * upper[i][j] / upper[j][j];
-                    System.out.println(upper[i][j]);
-                    System.out.println(upper[j][j]);
-                    System.out.println(temp);
                     double[][] temporary = new double[n][n];
                     for (int m = 0; m < n; m++) {
                         for (int p = 0; p < n; p++) {
@@ -44,7 +41,6 @@ public class LU {
                     }
                     temporary[i][j] = temp;
                     Matrix asdf = new Matrix(temporary);
-                    asdf.print(n, n);
                     g.add(asdf);
                     for (int k = 0; k < n; k++) {
                         upper[i][k] = upper[i][k] + (temp * upper[j][k]);
@@ -58,10 +54,6 @@ public class LU {
             finalLower = Multiply.multiply(finalLower, g.remove().inverse());
         }
         finalUpper = new Matrix(upper);
-
-        finalLower.print(n, n);
-        finalUpper.print(n, n);
-
     }
 
     public Matrix getUpper() {
@@ -76,13 +68,14 @@ public class LU {
         return a;
     }
 
-    public void solve(Matrix y) {
+    public Matrix solve(Matrix b) {
         if (finalLower == null || finalUpper == null) {
             System.out.println("You need to run LU first before solving.");
         } else {
-
+            Matrix y = solve_qr_b.Solve(finalLower, b);
+            return solve_qr_b.Solve(finalUpper, y);
         }
-
+            return null;
     }
 
     public double getError() {
