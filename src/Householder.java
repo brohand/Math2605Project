@@ -18,10 +18,10 @@ public class Householder {
     public static Matrix getQ(Matrix a) {
         Matrix curr = a;
         Matrix h1h2h3 = null;
-        for (int i = 0; i < a.getColumnDimension(); i++) {
+        for (int i = 0; i < a.getColumnDimension() - 1; i++) {
             Matrix H = getHouseholderReflection(curr, i);
             h1h2h3 = (h1h2h3 == null) ? H : h1h2h3.times(H);
-            curr = curr.times(getHouseholderReflection(curr, i));
+            curr = H.times(curr);
         }
         return h1h2h3;
     }
@@ -35,8 +35,8 @@ public class Householder {
      */
     public static Matrix getR(Matrix a) {
         Matrix curr = a;
-        for (int i = 0; i < a.getColumnDimension(); i++) {
-            curr = curr.times(getHouseholderReflection(curr, i));
+        for (int i = 0; i < a.getColumnDimension() - 1; i++) {
+            curr = getHouseholderReflection(curr, i).times(curr);
         }
         return curr;
     }
@@ -67,11 +67,15 @@ public class Householder {
         //gets identity matrix
         Matrix identity = getIdentityMatrix(columns);
 
-        //gets V
-        double[] v = new double[columns];
+        //gets x
+        double[] x1 = new double[columns];
         for (int i = col; i < col + columns; i++ ) {
-            v[i] = input[col][i];
+            x1[i - col] = input[i][col];
         }
+
+        //gets v
+        double[] v = x1;
+        v[0] += vectorNorm(v);
 
         //gets VVt
         Matrix VVt = getVVt(v);
@@ -145,7 +149,7 @@ public class Householder {
         }
         double[][] identity = new double[n][n];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; i < n; j++) {
+            for (int j = 0; j < n; j++) {
                 if (i == j) {
                     identity[i][j] = 1;
                 } else {

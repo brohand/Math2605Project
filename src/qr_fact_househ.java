@@ -49,5 +49,6 @@ public class qr_fact_househ {
     		}
     		System.out.println("");
 		}
-	}	
+	}
+
 }
