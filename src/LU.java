@@ -6,15 +6,15 @@ public class LU {
     int n;
     Matrix finalUpper;
     Matrix finalLower;
+    double error = -1;
 
     public LU(Matrix a) {
         this.a = a;
+        n = a.getRowDimension();
     }
 
     public void lu_fact() {
         LinkedList<Matrix> g = new LinkedList<Matrix>();
-
-        n = a.getRowDimension();
         double [][]original = a.getArrayCopy();
         double [][]upper = original;
         double [][]identity = new double[n][n];
@@ -64,6 +64,32 @@ public class LU {
 
     }
 
+    public Matrix getUpper() {
+        return finalUpper;
+    }
+
+    public Matrix getLower() {
+        return finalLower;
+    }
+
+    public Matrix getOriginal() {
+        return a;
+    }
+
+    public void solve(Matrix y) {
+        if (finalLower == null || finalUpper == null) {
+            System.out.println("You need to run LU first before solving.");
+        } else {
+
+        }
+
+    }
+
+    public double getError() {
+        Matrix temp = Multiply.multiply(finalLower, finalUpper);
+        return Norm.getNorm(temp.minus(a));
+    }
+
     public static void main(String[] args) {
         double [][]test = new double[4][4];
         test[0][0] = 1;
@@ -87,5 +113,7 @@ public class LU {
         Matrix a = new Matrix(test);
         LU testing = new LU(a);
         testing.lu_fact();
+
+        System.out.println(testing.getError());
     }
 }
