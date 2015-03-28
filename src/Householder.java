@@ -8,7 +8,6 @@ import Jama.Matrix;
  */
 public class Householder {
 
-
     /**
      * Gets the Q matrix for QR factorization
      * uses Householders Reflections
