@@ -134,7 +134,9 @@ public class Driver {
             System.out.println("The error for a hilbert matrix of size " + n + " is " + lu.getError());
             Matrix c = lu.solve(b);
             System.out.println("The solution, x, for LU is ");
-            c.print(c.getRowDimension(), c.getColumnDimension());
+            for (int i = 0; i < c.getRowDimension(); i++) {
+                System.out.println(c.get(i, 0));
+            }
             System.out.print("The error, Hx - b, for LU is ");
             Matrix e = Multiply.multiply(hilbert, c).minus(b);
             System.out.print(Norm.getNorm(e));

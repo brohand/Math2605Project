@@ -1,4 +1,6 @@
 import Jama.*;
+
+import java.text.NumberFormat;
 import java.util.LinkedList;
 public class LU {
 
@@ -7,10 +9,13 @@ public class LU {
     Matrix finalUpper;
     Matrix finalLower;
     double error = -1;
+    NumberFormat nf;
 
     public LU(Matrix a) {
         this.a = a;
         n = a.getRowDimension();
+        nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(8);
     }
 
     public void lu_fact() {
@@ -49,11 +54,30 @@ public class LU {
             }
         }
 
-        finalLower = g.remove().inverse();
+        Matrix tempG = g.remove();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j) {
+                    tempG.set(i, j, -1 * tempG.get(i, j));
+                }
+            }
+        }
+        finalLower = tempG;
         while (g.peek() != null) {
-            finalLower = Multiply.multiply(finalLower, g.remove().inverse());
+            tempG = g.remove();
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i != j) {
+                        tempG.set(i, j, -1 * tempG.get(i, j));
+                    }
+                }
+            }
+            finalLower = Multiply.multiply(finalLower, tempG);
         }
         finalUpper = new Matrix(upper);
+        //finalLower.print(nf, 15);
+        //finalUpper.print(nf, 15);
+
     }
 
     public Matrix getUpper() {
