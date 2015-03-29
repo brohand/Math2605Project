@@ -1,5 +1,5 @@
 import Jama.*;
-public class Jacobi {
+public class GaussSeidel {
     Matrix a; //stands for the matrix, A
     Matrix x = null; //note that this is a vector, stands for solving the solution in the iteration
     Matrix y; //note that this is a vector, stands for the vector, b
@@ -8,7 +8,7 @@ public class Jacobi {
     int maxIterations = 1000;
 
     //default constructor, assuming that matrix A and vector b are not augmented.
-    public Jacobi(Matrix a, Matrix y, Matrix x0, double tol) {
+    public GaussSeidel(Matrix a, Matrix y, Matrix x0, double tol) {
         this.a = a;
         this.y = y;
         this.x0 = x0;
@@ -16,7 +16,7 @@ public class Jacobi {
     }
 
     //if augmented, do other stuff.
-    public Jacobi(Matrix a, Matrix x0, double tol) {
+    public GaussSeidel(Matrix a, Matrix x0, double tol) {
         double temp[][] = new double[a.getRowDimension()][a.getColumnDimension() - 1];
         double tempB[][] = new double[a.getRowDimension()][1];
         for (int i = 0; i < a.getRowDimension(); i++) {
@@ -40,7 +40,7 @@ public class Jacobi {
         double[][] t = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (i == j) {
+                if (i >= j) {
                     s[i][j] = original[i][j];
                     t[i][j] = 0;
                 } else {
@@ -138,7 +138,7 @@ public class Jacobi {
         Matrix a = new Matrix(test);
         Matrix b = new Matrix(testB);
         Matrix c = new Matrix(testGuess);
-        Jacobi testing = new Jacobi(a, c, 1.0/100000000.0);
+        GaussSeidel testing = new GaussSeidel(a, c,  1.0/100000000.0);
         testing.iterate();
     }
 }

@@ -1,20 +1,22 @@
+//Jinsong's version of backwards substitution, created because SOMEONE was taking too long
+
 import Jama.Matrix;
-public class ForwardSubstitution {
+public class BackwardsSubstitution {
 
     //Please note that this ONLY works on matrices that are
-    //lower triangular (all values on or BELOW the diagonal)
-    public static Matrix forwardSubstitution(Matrix matrixA, Matrix matrixB) {
+    //upper triangular (all values on or BELOW the diagonal)
+    public static Matrix backwardsSubstitution(Matrix matrixA, Matrix matrixB) {
         double [][] a = matrixA.getArrayCopy();
         double[][] b = matrixB.getArrayCopy();
         double[][] x = new double[matrixA.getRowDimension()][1];
-        for (int j = 0; j < matrixA.getRowDimension(); j++) {
-            for (int k = 0; k < matrixA.getColumnDimension(); k++) {
-                if (k == 0 && j == 0) {
+        for (int j = matrixA.getRowDimension() - 1; j >= 0; j--) {
+            for (int k = matrixA.getColumnDimension() - 1; k >= 0; k--) {
+                if (k == matrixA.getColumnDimension() - 1 && j == matrixA.getRowDimension() - 1) {
                     x[j][0] = b[j][0] / a[j][k];
                 } else {
                     if (k == j) {
                         double temp = 0;
-                        for (int l = k - 1; l >= 0; l--) {
+                        for (int l = k + 1; l < matrixA.getColumnDimension(); l++) {
                             temp = temp + (x[l][0] * a[j][l]);
                         }
                         x[j][0] = (b[k][0] - temp) / a[j][k];
@@ -34,10 +36,10 @@ public class ForwardSubstitution {
 
     public static void main(String[] args) {
         double [][]test = {
-                {4, 0, 0, 0},
-                {3, 5, 0, 0},
-                {2, 6, 8, 0},
-                {1, 5, 3, 6}
+                {1, 5, 3, 6},
+                {0,3,5,7},
+                {0,0,2,8},
+                {0,0,0,4},
         };
         double [][]testB = {
                 {1},
@@ -45,6 +47,6 @@ public class ForwardSubstitution {
                 {5},
                 {8}
         };
-        ForwardSubstitution.forwardSubstitution(new Matrix(test), new Matrix(testB));
+        BackwardsSubstitution.backwardsSubstitution(new Matrix(test), new Matrix(testB));
     }
 }
