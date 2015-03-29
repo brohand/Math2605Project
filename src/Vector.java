@@ -159,4 +159,19 @@ public class Vector {
         }
         return true;
     }
+
+    /**
+     * Gets maximum value in vector
+     *
+     * @return max value
+     */
+    public double maxValue() {
+        double max = 0;
+        for (int i = 0; i < v.length; i++) {
+            if (Math.abs(v[i]) > max) {
+                max = Math.abs(v[i]);
+            }
+        }
+        return max;
+    }
 }

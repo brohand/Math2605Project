@@ -4,7 +4,7 @@ import Jama.Matrix;
  * Gets Eigenvalues of a Matrix with Power Method
  *
  * @author Patrick tam
- * @version 0.1
+ * @version 0.2
  */
 public class PowerMethod {
 
@@ -16,10 +16,10 @@ public class PowerMethod {
      */
     public static Vector getEigenvector(Matrix a, double tol, Vector u0) {
         Vector uk = u0;
-        Vector uk1 = new Vector(oneIteration(a, uk.getArray()));
+        Vector uk1 = oneIteration(a, u0);
         while (uk1.minus(uk).norm() > tol) {
             uk = uk1;
-            uk1 = new Vector(oneIteration(a, uk.getArray()));
+            uk1 = oneIteration(a, uk);
         }
         return uk1;
     }
@@ -29,16 +29,12 @@ public class PowerMethod {
      * Uk+1 = (1/alphak)AUk
      *
      * @param a Matrix to find eigenvalues for
-     * @param u the starting vector
+     * @param uk the starting vector
      * @return double as vector representation of an iteration of Power method
      */
-    private static double[] oneIteration(Matrix a,  double[] u) {
-        double[] Auk = matrixTimesVector(a, u);
-        double alpha = u[0];
-        for (int i = 0; i < Auk.length; i++) {
-            Auk[i] *= 1.0 / alpha;
-        }
-        return Auk;
+    private static Vector oneIteration(Matrix a,  Vector uk) {
+        Vector Auk = matrixTimesVector(a, uk);
+        return Auk.times(1.0 / Auk.maxValue());
     }
     /**
      * Matrix * Vector
@@ -47,14 +43,14 @@ public class PowerMethod {
      * @param v input Vector
      * @return Matrix * Vector
      */
-    private static double[] matrixTimesVector(Matrix aMatrix, double[] v) {
+    private static Vector matrixTimesVector(Matrix aMatrix, Vector v) {
         double[][] a = aMatrix.getArrayCopy();
         double[] vf = new double[a.length];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
-                vf[i] += a[i][j] * v[i];
+                vf[i] += a[i][j] * v.get(j);
             }
         }
-        return vf;
+        return new Vector(vf);
     }
 }
