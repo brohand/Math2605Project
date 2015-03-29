@@ -29,6 +29,13 @@ public class Vector {
         return v[i];
     }
 
+    /**
+     * Subtracts two vectors
+     * this - v
+     *
+     * @param v vector to subtract
+     * @return subtracted vector
+     */
     public Vector minus(Vector v) {
         if (this.v.length != v.length()) {
             throw new IllegalArgumentException("You can't subtract vectors with different lengths");
@@ -40,6 +47,13 @@ public class Vector {
         return new Vector(sub);
     }
 
+    /**
+     * Adds two vectors together
+     * this + v
+     *
+     * @param v Vector to add
+     * @return this + v
+     */
     public Vector plus(Vector v) {
         if (this.v.length != v.length()) {
             throw new IllegalArgumentException("You can't add vectors with different lengths");
@@ -51,6 +65,13 @@ public class Vector {
         return new Vector(add);
     }
 
+    /**
+     * Gets the dot product of two vectors
+     * this dot v
+     *
+     * @param v vector to dot with
+     * @return this dot v
+     */
     public double dot(Vector v) {
         if (this.v.length != v.length()) {
             throw new IllegalArgumentException("You can't dot vectors with different lengths");
