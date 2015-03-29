@@ -76,6 +76,13 @@ public class Driver {
             double qrhErr = Householder.error(hilbert);
             System.out.println("||QR - H|| = " + qrhErr);
 
+            //Solution Error with HouseHolders
+            double hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
+            System.out.println("------ ||HXsol - b||" + hxErr);
+
+            System.out.println(":)");
+
+            //GIVENS
             System.out.println("For Hilbert of size " + n + " With Givens:");
             xSol = solve_qr_b.givensSolve(hilbert, b);
             System.out.println("Xsol = ");
@@ -84,16 +91,17 @@ public class Driver {
             double qrGErr = qrA.getError();
             System.out.println("||QR - H|| = " + qrGErr);
 
-            double hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
+            //Solution Error with givens
+            hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
             System.out.println("------ ||HXsol - b||" + hxErr);
             x[i] = n;
             qrhError[i] = qrhErr;
             hxError[i] = hxErr;
             i++;
         }
-
+        DataUtil.scale(x);
         Data X = new Data(x);
-
+        DataUtil.scale(qrhError);
         Data qrhY = new Data(qrhError);
         Data qrGY = new Data(qrGError);
         Data hxY = new Data(hxError);
