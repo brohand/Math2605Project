@@ -8,20 +8,36 @@ import Jama.Matrix;
  */
 public class PowerMethod {
 
+    public static final int MAX_ITERATIONS = 1000000;
+
+    private static Vector eigenvector = null;
+    private static double eigenvalue = Integer.MIN_VALUE;
+    private static int iterations = 0;
+
+
     /**
-     * Uses Power Method to get the maximum eigenvalue
+     * Uses Power Method to get the
+     *  - maximum eigenvalue
+     *  - corresponding eigenvector
+     *  - the number of iterations
      *
      * @param a input Matrix
      * @return max eigenvalue
      */
-    public static Vector getEigenvector(Matrix a, double tol, Vector u0) {
+    public static void powerMethod(Matrix a, double tol, Vector u0) {
         Vector uk = u0;
         Vector uk1 = oneIteration(a, u0);
+        int i = 1;
         while (uk1.minus(uk).norm() > tol) {
+            if (i >= MAX_ITERATIONS) {
+                throw new PowerMethodException("Failed to converge after " + i + " iterations.");
+            }
+            i++;
             uk = uk1;
             uk1 = oneIteration(a, uk);
         }
-        return uk1;
+        eigenvector = uk1;
+        iterations = i;
     }
 
     /**
@@ -34,6 +50,7 @@ public class PowerMethod {
      */
     private static Vector oneIteration(Matrix a,  Vector uk) {
         Vector Auk = matrixTimesVector(a, uk);
+        eigenvalue = Auk.maxValue();
         return Auk.times(1.0 / Auk.maxValue());
     }
     /**
@@ -52,5 +69,26 @@ public class PowerMethod {
             }
         }
         return new Vector(vf);
+    }
+
+    public static Vector getEigenvector() {
+        if (eigenvector == null) {
+            throw new PowerMethodException("Eigenvector has not been initialized.");
+        }
+        return eigenvector;
+    }
+
+    public static double getEigenvalue() {
+        if (eigenvalue == Integer.MIN_VALUE) {
+            throw new PowerMethodException("Eigenvalue has not been initialized.");
+        }
+        return eigenvalue;
+    }
+
+    public static int getIterations() {
+        if (iterations == 0l) {
+            throw new PowerMethodException("Iterations has not been initialized.");
+        }
+        return iterations;
     }
 }

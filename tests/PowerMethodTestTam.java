@@ -21,7 +21,9 @@ public class PowerMethodTestTam {
         Matrix a = new Matrix(aM);
         double[] u0m = {1,1,1};
         Vector u0 = new Vector(u0m);
-
-        System.out.println("Eigenvector: " + PowerMethod.getEigenvector(a, 0.000000001, u0));
+        PowerMethod.powerMethod(a, 0.000000001, u0);
+        System.out.println("Eigenvector: " + PowerMethod.getEigenvector());
+        System.out.println("Eigenvalue: " + PowerMethod.getEigenvalue());
+        System.out.println("Iterations: " + PowerMethod.getIterations());
     }
 }
