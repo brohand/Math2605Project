@@ -13,12 +13,10 @@ public class BackwardSubstitution {
         //resultArr[b.getRowDimension() - 1][0] = lastX;
 
         for(int row = B.getRowDimension() - 1; row >= 0; row--) {
-
             double currPiv = B.get(row, row);
             double x = b.get(row, 0) / currPiv;
             for(int i = 0; i < B.getColumnDimension(); i++) {
                 double mod = 1;
-
                 if(i != row) {
                     if(i != 0 && i < b.getRowDimension()) {
                         mod = result.get(i, 0);

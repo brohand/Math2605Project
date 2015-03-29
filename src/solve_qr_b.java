@@ -8,9 +8,9 @@ public class solve_qr_b {
         GivensQR qrA = new GivensQR(A);
 
         Matrix QTb = Multiply.multiply(Householder.getQ(A).transpose(),b);
-        Matrix rInverse = BackwardSubstitution.backSub(Householder.getR(A), QTb);
+        Matrix sol = BackwardSubstitution.backSub(Householder.getR(A), QTb);
 
-        return rInverse;
+        return sol;
 
 
 
@@ -26,19 +26,23 @@ public class solve_qr_b {
          Matrix testMat = Driver.createHilbert(4,4);
         testMat.print(4,4);
         System.out.println();
-        //testMat.inverse().print(4, 4);
+        testMat.transpose().print(4, 4);
         //System.out.println();
         //backSub(testMat,).print(4, 4);
         System.out.println();
 
         double[][] b = {{0.0464159},{0.0464159},{0.0464159},{0.0464159}};
-
-        Matrix correctSol = testMat.solve(new Matrix(b));
+        Matrix QTb = Multiply.multiply(Householder.getQ(testMat).transpose(),new Matrix(b));
+        Matrix correctSol = Householder.getR(testMat).solve(QTb);
         correctSol.print(1,4);
         System.out.println();
 
-        Matrix shitSol = BackwardSubstitution.backSub(testMat, new Matrix(b));
+        Matrix shitSol = BackwardSubstitution.backSub(Householder.getR(testMat), QTb);
         shitSol.print(1,4);
+
+
+        Matrix nuthaShitSol = Solve(testMat, new Matrix(b));
+        nuthaShitSol.print(1,4);
 
 
     }

@@ -28,7 +28,6 @@ public class GivensQR {
             int pivot = j;
             for(int i = pivot + 1; i < mat.getRowDimension(); i++) {
                 double b = mat.get(i, j);
-                if(b != 0) {
                     double a = mat.get(pivot, pivot);
                     r = Math.sqrt(b * b + a * a);
                     c = a / r;
@@ -51,10 +50,7 @@ public class GivensQR {
                     Givens.add(newGivens.transpose());
 
                     mat = Multiply.multiply(newGivens, mat);
-                } else {
-                    double[][] newG = new double[mat.getRowDimension()][mat.getColumnDimension()];
 
-                }
             }
         }
         return mat;
