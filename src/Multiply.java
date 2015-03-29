@@ -1,39 +1,44 @@
 import Jama.Matrix;
+
+/**
+ * Multiplies two matrices together
+ *
+ * @author Patrick Tam
+ * @version 0.1
+ */
 public class Multiply {
-    public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
-        double [][] a = matrix1.getArray();
-        double [][] b = matrix2.getArray();
-        int row1 = matrix1.getRowDimension();
-        int column1 = matrix1.getColumnDimension();
-        int row2 = matrix2.getRowDimension();
-        int column2 = matrix2.getColumnDimension();
-        double [][] c = new double[row1][column2];
-        for (int k = 0; k < column2; k++) {
-            for (int i = 0; i < row1; i++) {
-                for (int j = 0; j < column1; j++) {
-                    c[i][k] = (a[i][j] * b[j][k]) + c[i][k];
+
+    /**
+     * Multiplies two matrices together
+     * a*b
+     *
+     * @param aM first matrix to multiply
+     * @param bM second matrix to multiply
+     * @return a * b
+     */
+    public static Matrix multiply(Matrix aM, Matrix bM) {
+        if (aM == null || bM == null) {
+            throw new MatrixException("You can't multiply null matrices.");
+        }
+        double[][] a = aM.getArray();
+        double[][] b = bM.getArray();
+        if (a.length == 0 || a[0].length == 0 || b.length == 0 || b[0].length == 0) {
+            throw new MatrixException("You can't multiply empty matrices");
+        }
+        if (a[0].length != b.length) {
+            throw new MatrixException("If a is m x n, b MUST be n x p");
+        }
+
+        double[][] c = new double[a.length][b[0].length];
+
+        for (int i = 0; i < c.length; i++) {
+            for (int j = 0; j < c[0].length; j++) {
+                for (int k = 0; k < a[0].length; k++) {
+                    c[i][j] += a[i][k] * b[k][j];
                 }
             }
         }
-        Matrix matrix = new Matrix(c, row1, column2);
-        return matrix;
-    }
-//}
-    public static void main(String[] args) {
-        double[][] g = {{2.414213562},{0},{1}};
-        double[][] h = {{2.414213562,0,1}};
-        Matrix x = new Matrix(g);
-        Matrix matrix = new Matrix(h);
-        Matrix y = Multiply.multiply(x, matrix);
-        print1(y);
-    }
-    public static void print1(Matrix x) {
-        double[][] valsTransposed = x.getArray();
-        for(int i = 0; i < valsTransposed.length; i++) {
-            for(int j = 0; j < valsTransposed[i].length; j++) {        
-                System.out.print( " " + valsTransposed[i][j] );
-            }
-            System.out.println("");
-        }
+
+        return new Matrix(c);
     }
 }
