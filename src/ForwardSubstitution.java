@@ -24,11 +24,11 @@ public class ForwardSubstitution {
         }
         Matrix finalA = new Matrix(a);
         Matrix finalX = new Matrix(x);
-        for (int i = 0; i < finalX.getRowDimension(); i++) {
-            for (int j = 0; j < finalX.getColumnDimension(); j++) {
-                System.out.println(finalX.get(i, j));
-            }
-        }
+//        for (int i = 0; i < finalX.getRowDimension(); i++) {
+//            for (int j = 0; j < finalX.getColumnDimension(); j++) {
+//                System.out.println(finalX.get(i, j));
+//            }
+//        }
         return finalX;
     }
 

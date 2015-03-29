@@ -138,7 +138,7 @@ public class Jacobi {
         Matrix a = new Matrix(test);
         Matrix b = new Matrix(testB);
         Matrix c = new Matrix(testGuess);
-        Jacobi testing = new Jacobi(a, c, 0.000001);
+        Jacobi testing = new Jacobi(a, c, 1.0/100000000.0);
         testing.iterate();
     }
 }

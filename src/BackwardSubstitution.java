@@ -1,11 +1,9 @@
 import Jama.Matrix;
 
-/**
- * Created by super_000 on 3/29/2015.
- */
 public class BackwardSubstitution {
 
-
+    //Please note that this ONLY works on matrices that are
+    //upper triangular (all values on or BELOW the diagonal)
     public static Matrix backSub(Matrix B, Matrix b) {
         Matrix R = B;
         //Matrix I = Identity.getIdentity(R.getColumnDimension());
@@ -32,9 +30,29 @@ public class BackwardSubstitution {
 
         }
 
-
+//        for (int i = 0; i < result.getRowDimension(); i++) {
+//            for (int j = 0; j < result.getColumnDimension(); j++) {
+//                System.out.println(result.get(i, j));
+//            }
+//        }
         return result;
 
+    }
+
+    public static void main(String[] args) {
+        double [][]test = {
+                {1, 5, 3, 6},
+                {0,3,5,7},
+                {0,0,2,8},
+                {0,0,0,4},
+        };
+        double [][]testB = {
+                {1},
+                {2},
+                {5},
+                {8}
+        };
+        BackwardSubstitution.backSub(new Matrix(test), new Matrix(testB));
     }
 
 }

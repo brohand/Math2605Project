@@ -51,8 +51,6 @@ public class GaussSeidel {
         }
         Matrix finalS = new Matrix(s);
         Matrix finalT = new Matrix(t);
-        finalS.print(n, n);
-        finalT.print(n, n);
 
         int iterations = 0;
         Matrix previousX = x0;
@@ -140,7 +138,7 @@ public class GaussSeidel {
         Matrix a = new Matrix(test);
         Matrix b = new Matrix(testB);
         Matrix c = new Matrix(testGuess);
-        GaussSeidel testing = new GaussSeidel(a, c, 0.000001);
+        GaussSeidel testing = new GaussSeidel(a, c,  1.0/100000000.0);
         testing.iterate();
     }
 }
