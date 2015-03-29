@@ -43,7 +43,7 @@ public class MultiplyTestTam {
         (new Matrix(c)).print(4, 2);
         assertArrayEquals(c,d.getArray());
     }
-    @Test(expected=MatrixException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testNullExcpetion() throws Exception {
         double[][] c = {
                 {95,110},
@@ -54,13 +54,7 @@ public class MultiplyTestTam {
         Multiply.multiply(null, new Matrix(c));
     }
 
-//    @Test(expected=MatrixException.class)
-//    public void testEmptyException() throws Exception {
-//        double[][] stuff = new double[0][0];
-//        Multiply.multiply(new Matrix(stuff), new Matrix(stuff));
-//    }
-
-    @Test(expected=MatrixException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testWrongSizeException() throws Exception {
         double[][] a= new double[1][2];
         double[][] b = new double[3][4];

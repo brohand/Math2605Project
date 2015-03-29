@@ -16,15 +16,15 @@ public class Multiply {
      */
     public static Matrix multiply(Matrix aM, Matrix bM) {
         if (aM == null || bM == null) {
-            throw new MatrixException("You can't multiply null matrices.");
+            throw new IllegalArgumentException("You can't multiply null matrices.");
         }
         double[][] a = aM.getArray();
         double[][] b = bM.getArray();
         if (a.length == 0 || a[0].length == 0 || b.length == 0 || b[0].length == 0) {
-            throw new MatrixException("You can't multiply empty matrices");
+            throw new IllegalArgumentException("You can't multiply empty matrices");
         }
         if (a[0].length != b.length) {
-            throw new MatrixException("If a is m x n, b MUST be n x p");
+            throw new IllegalArgumentException("If a is m x n, b MUST be n x p");
         }
 
         double[][] c = new double[a.length][b[0].length];
@@ -49,12 +49,12 @@ public class Multiply {
      */
     public static Vector matrixTimesVector(Matrix aMatrix, Vector vVector) {
         if(aMatrix == null || vVector == null) {
-            throw new MatrixException("You can't multiply a null matrices or vectors.");
+            throw new IllegalArgumentException("You can't multiply a null matrices or vectors.");
         }
         double[][] a = aMatrix.getArray();
         double[] v = vVector.getArray();
         if(a.length != v.length) {
-            throw new MatrixException("You can't multiply a Matrix and Vector with different lengths");
+            throw new IllegalArgumentException("You can't multiply a Matrix and Vector with different lengths");
         }
         double[] vf = new double[a.length];
         for (int i = 0; i < a.length; i++) {

@@ -111,7 +111,7 @@ public class Matrix {
             throw new IllegalArgumentException("You can't subtract a null matrix");
         }
         if (aM.getColumnDimension() != getColumnDimension() || aM.getRowDimension() != getRowDimension()) {
-            throw new MatrixException("You can't subtract matrices with different dimensions");
+            throw new IllegalArgumentException("You can't subtract matrices with different dimensions");
         }
         double[][] a = aM.getArray();
         double[][] sub = new double[m.length][m[0].length];
@@ -175,11 +175,11 @@ public class Matrix {
      */
     public Vector times(Vector a) {
         if(a == null) {
-            throw new MatrixException("You can't multiply a matrix by a null vector");
+            throw new IllegalArgumentException("You can't multiply a matrix by a null vector");
         }
         double[] v = a.getArray();
         if(m.length != v.length) {
-            throw new MatrixException("You can't multiply a Matrix and Vector with different lengths");
+            throw new IllegalArgumentException("You can't multiply a Matrix and Vector with different lengths");
         }
         double[] vf = new double[m.length];
         for (int i = 0; i < m.length; i++) {
