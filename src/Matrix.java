@@ -265,7 +265,12 @@ public class Matrix {
         return copy;
     }
 
-    //not my code
+    /**
+     * All the code below is from NIST's JAMA library
+     *
+     * @url http://math.nist.gov/javanumerics/jama/
+     */
+
     public void print(int var1, int var2) {
         this.print(new PrintWriter(System.out, true), var1, var2);
     }
