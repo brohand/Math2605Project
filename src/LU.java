@@ -80,6 +80,7 @@ public class LU {
 
     public double getError() {
         Matrix temp = Multiply.multiply(finalLower, finalUpper);
+        System.out.println(Norm.getNorm(temp.minus(a)));
         return Norm.getNorm(temp.minus(a));
     }
 
@@ -106,7 +107,5 @@ public class LU {
         Matrix a = new Matrix(test);
         LU testing = new LU(a);
         testing.lu_fact();
-
-        System.out.println(testing.getError());
     }
 }

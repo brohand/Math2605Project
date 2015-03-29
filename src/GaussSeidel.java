@@ -33,7 +33,7 @@ public class GaussSeidel {
         this.x0 = x0;
         this.tol = tol;
     }
-    public void iterate() {
+    public void gauss_seidel() {
         int n = a.getColumnDimension();
         double[][] original = a.getArrayCopy();
         double[][] s = new double[n][n];
@@ -139,6 +139,6 @@ public class GaussSeidel {
         Matrix b = new Matrix(testB);
         Matrix c = new Matrix(testGuess);
         GaussSeidel testing = new GaussSeidel(a, c,  1.0/100000000.0);
-        testing.iterate();
+        testing.gauss_seidel();
     }
 }

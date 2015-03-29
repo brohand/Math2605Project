@@ -33,7 +33,7 @@ public class Jacobi {
         this.x0 = x0;
         this.tol = tol;
     }
-    public void iterate() {
+    public void jacobi() {
         int n = a.getColumnDimension();
         double[][] original = a.getArrayCopy();
         double[][] s = new double[n][n];
@@ -139,6 +139,6 @@ public class Jacobi {
         Matrix b = new Matrix(testB);
         Matrix c = new Matrix(testGuess);
         Jacobi testing = new Jacobi(a, c, 1.0/100000000.0);
-        testing.iterate();
+        testing.jacobi();
     }
 }
