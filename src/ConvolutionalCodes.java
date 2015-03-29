@@ -1,12 +1,73 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class ConvolutionalCodes {
 
-    public static void main(String[] args) {
+    private static Scanner kbReader = new Scanner(System.in);
 
-        encode(5);
-        System.out.println("");
-        decode("1101010111011100", 3, 1.0 / 100000000.0);
+    public static void main(String[] args) {
+        boolean keepLooping = true;
+        System.out.println("CONVOLUTIONAL CODES SUPER EXTRA COMPLETE 100% PLUS DLC VERSION");
+        do {
+            System.out.println("");
+            System.out.println("CHOOSE THY FATE");
+            System.out.println("1. Encoding");
+            System.out.println("2. Decoding");
+            System.out.println("3. Iterative Algorithm Testing");
+            System.out.println("4. Quit");
+            System.out.print("Your selection? ");
+            int fate = kbReader.nextInt();
+            System.out.println("");
+            if (fate == 1) {
+                System.out.println("Encoding selected.");
+                System.out.print("Enter the length of the stream you would like to generate: ");
+                int length = kbReader.nextInt();
+                System.out.println("");
+                encode(length);
+            } else if (fate == 2) {
+                boolean invalid = true;
+                System.out.println("Decoding selected.");
+                while (invalid) {
+                    System.out.println("");
+                    System.out.print("Enter the stream that you would like to decode: ");
+                    String temp = kbReader.next();
+                    System.out.println("");
+                    if (temp.length() % 2 != 0) {
+                        System.out.println("ERROR: The stream entered must have a even length.");
+                    } else {
+                        System.out.println("Which iterative method would you like to decode using?");
+                        System.out.println("1. Jacobi");
+                        System.out.println("2. Gauss-Seidel");
+                        System.out.println("3. Both");
+                        System.out.print("Method: ");
+                        int method = kbReader.nextInt();
+                        if (method < 1 || method > 3) {
+                            System.out.println("Invalid method.");
+                        } else {
+                            System.out.println("");
+                            System.out.print("Enter your error tolerance (enter -1 for default, 10^-8): ");
+                            double tol = kbReader.nextDouble();
+                            if (tol <= 0) {
+                                tol = 1.0 / 100000000.0;
+                            }
+                            System.out.println("The recorded tolerance is " + tol);
+                            System.out.println("");
+                            decode(temp, method, tol);
+                            invalid = false;
+                        }
+                    }
+                }
+            } else if (fate == 3) {
+
+            } else if (fate == 4) {
+                System.out.println("fuck you");
+                keepLooping = false;
+            } else {
+                System.out.println("Invalid response.");
+            }
+
+
+        } while (keepLooping);
     }
 
     public static String decode(String n, int method, double tol) {
