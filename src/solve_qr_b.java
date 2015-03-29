@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class solve_qr_b {
 
-    public static Matrix Solve(Matrix A, Matrix b) {
+    public static Matrix houseSolve(Matrix A, Matrix b) {
         GivensQR qrA = new GivensQR(A);
 
         Matrix QTb = Multiply.multiply(Householder.getQ(A).transpose(),b);
@@ -13,6 +13,16 @@ public class solve_qr_b {
         return sol;
 
 
+
+    }
+
+    public static Matrix givensSolve(Matrix A, Matrix b) {
+        GivensQR qrA = new GivensQR(A);
+
+        Matrix QTb = Multiply.multiply(qrA.Q.transpose(),b);
+        Matrix sol = BackwardSubstitution.backSub(qrA.R, QTb);
+
+        return sol;
 
     }
 
@@ -41,7 +51,7 @@ public class solve_qr_b {
         shitSol.print(1,4);
 
 
-        Matrix nuthaShitSol = Solve(testMat, new Matrix(b));
+        Matrix nuthaShitSol = houseSolve(testMat, new Matrix(b));
         nuthaShitSol.print(1,4);
 
 

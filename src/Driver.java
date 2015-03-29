@@ -55,34 +55,61 @@ public class Driver {
 
 
     public static void qrVisualizer() {
+
         System.out.println("QR Factorization for Hilbert Matricies");
         System.out.println("");
-        double[] y = new double[19];
-        double[] qrError = new double[19];
+        double[] x = new double[19];
+        double[] qrhError = new double[19];
+        double[] qrGError = new double[19];
         double[] hxError = new double[19];
 
         int i = 0;
         for(int n = 2; n <= 20; n++) {
             Matrix hilbert = createHilbert(n, n);
+            GivensQR qrA = new GivensQR(hilbert);
             Matrix b = createB(n);
-            Matrix xSol = solve_qr_b.Solve(hilbert, b);
-            System.out.println("For Hilbert of size " + n + ":");
+            Matrix xSol = solve_qr_b.houseSolve(hilbert, b);
+            System.out.println("For Hilbert of size " + n + " With HouseHolders:");
             System.out.println("Xsol = ");
-            xSol.print(n, n);
+            xSol.print(n, 1);
             System.out.print("------");
-            double qrErr = Householder.error(hilbert);
-            System.out.print("||QR - H|| = " + qrErr);
+            double qrhErr = Householder.error(hilbert);
+            System.out.println("||QR - H|| = " + qrhErr);
+
+            System.out.println("For Hilbert of size " + n + " With Givens:");
+            xSol = solve_qr_b.givensSolve(hilbert, b);
+            System.out.println("Xsol = ");
+            xSol.print(n, 1);
+            System.out.print("------");
+            double qrGErr = qrA.getError();
+            System.out.println("||QR - H|| = " + qrGErr);
+
             double hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
             System.out.println("------ ||HXsol - b||" + hxErr);
-            y[i] = n;
-            qrError[i] = qrErr;
+            x[i] = n;
+            qrhError[i] = qrhErr;
             hxError[i] = hxErr;
             i++;
         }
 
-        Data Y = new Data(y);
-        Data qrX = new Data(qrError);
-        Data hxX = new Data(hxError);
+        Data X = new Data(x);
+
+        Data qrhY = new Data(qrhError);
+        Data qrGY = new Data(qrGError);
+        Data hxY = new Data(hxError);
+
+        XYLine houseHolderLine = Plots.newXYLine(X, qrhY, Color.BLUE);
+        ScatterPlot houseChart = GCharts.newScatterPlot(houseHolderLine);
+        houseChart.setSize(400, 400);
+        System.out.println(houseChart.toURLString());
+        XYLine givensLine = Plots.newXYLine(X, qrGY, Color.RED);
+        XYLineChart givensChart = GCharts.newXYLineChart(givensLine);
+        givensChart.setSize(400, 400);
+        System.out.println(givensChart.toURLString());
+        XYLine solErrorLine = Plots.newXYLine(X, hxY, Color.GREEN);
+        XYLineChart solErrorChart = GCharts.newXYLineChart(solErrorLine);
+        solErrorChart.setSize(400, 400);
+        System.out.println(solErrorChart.toURLString());
 
 
 
