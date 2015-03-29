@@ -29,7 +29,7 @@ public class ForwardSubstitution {
                 System.out.println(finalX.get(i, j));
             }
         }
-        return null;
+        return finalX;
     }
 
     public static void main(String[] args) {
