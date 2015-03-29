@@ -168,6 +168,29 @@ public class Matrix {
     }
 
     /**
+     * Matrix * Vector
+     *
+     * @param a input Vector
+     * @return Matrix * Vector
+     */
+    public Vector times(Vector a) {
+        if(a == null) {
+            throw new MatrixException("You can't multiply a matrix by a null vector");
+        }
+        double[] v = a.getArray();
+        if(m.length != v.length) {
+            throw new MatrixException("You can't multiply a Matrix and Vector with different lengths");
+        }
+        double[] vf = new double[m.length];
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                vf[i] += m[i][j] * v[j];
+            }
+        }
+        return new Vector(vf);
+    }
+
+    /**
      * Tranposes this Matrix
      *
      * @return A ^ T
@@ -180,6 +203,24 @@ public class Matrix {
             }
         }
         return new Matrix(t);
+    }
+
+    /**
+     * Gets the norm of the Matrix
+     * norm is defined as absolute value of max entry in Matrix
+     *
+     * @return norm of the Matrix
+     */
+    public double norm() {
+        double max = 0;
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                if (Math.abs(m[i][j]) > max) {
+                    max = Math.abs(m[i][j]);
+                }
+            }
+        }
+        return max;
     }
 
     /**

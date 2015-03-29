@@ -74,13 +74,13 @@ public class Householder {
 
         //gets v
         double[] v = x1;
-        v[0] += vectorNorm(v);
+        v[0] += new Vector(v).norm();
 
         //gets VVt
         Matrix VVt = getVVt(v);
 
         //gets 2uut
-        Matrix uut2 = VVt.times(2.0 / Math.pow(vectorNorm(v), 2));
+        Matrix uut2 = VVt.times(2.0 / Math.pow((new Vector(v)).norm(), 2));
 
         //gets Hhat matrix as 2d double array
         double[][] hHat = identity.minus(uut2).getArrayCopy();
@@ -120,21 +120,6 @@ public class Householder {
     }
 
     /**
-     * Gets the norm of a vector
-     *
-     * @param v vector as a double array
-     * @return vector norm
-     */
-    private static double vectorNorm(double[] v) {
-        double sum = 0;
-        for (int i = 0; i < v.length; i++) {
-            sum += Math.pow(v[i],2);
-        }
-        return Math.pow(sum, 0.5);
-    }
-
-
-    /**
      * Gets a square, n x n Identity Matrix
      *
      * @throws IllegalArgumentException if n < 1
@@ -169,6 +154,6 @@ public class Householder {
     public static double error(Matrix a) {
         Matrix q = getQ(a);
         Matrix r = getR(a);
-        return Norm.getNorm(q.times(r).minus(a));
+        return q.times(r).minus(a).norm();
     }
 }

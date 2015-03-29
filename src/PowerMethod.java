@@ -47,7 +47,7 @@ public class PowerMethod {
      * @return double as vector representation of an iteration of Power method
      */
     private static Vector oneIteration(Matrix a,  Vector uk) {
-        Vector Auk = Multiply.matrixTimesVector(a, uk);
+        Vector Auk = a.times(uk);
         eigenvalue = Auk.maxValue();
         return Auk.times(1.0 / Auk.maxValue());
     }
