@@ -5,6 +5,7 @@ public class Jacobi {
     Matrix x0; //note that this is a vector, stands for the initial guess
     double tol;
     int maxIterations = 1000;
+    int iterations = 0;
 
     //default constructor, assuming that matrix A and vector b are not augmented.
     public Jacobi(Matrix a, Matrix y, Matrix x0, double tol) {
@@ -32,7 +33,7 @@ public class Jacobi {
         this.x0 = x0;
         this.tol = tol;
     }
-    public void jacobi() {
+    public Matrix jacobi() {
         int n = a.getColumnDimension();
         double[][] original = a.getArrayCopy();
         double[][] s = new double[n][n];
@@ -51,7 +52,7 @@ public class Jacobi {
         Matrix finalS = new Matrix(s);
         Matrix finalT = new Matrix(t);
 
-        int iterations = 0;
+        iterations = 0;
         Matrix previousX = x0;
         boolean keepLooping = true;
         while (keepLooping) {
@@ -74,23 +75,7 @@ public class Jacobi {
             }
         }
 
-        if (iterations < maxIterations) {
-            System.out.println("The final estimated x value is: ");
-            for (int i = 0; i < x.getRowDimension(); i++) {
-                for (int j = 0; j < x.getColumnDimension(); j++) {
-                    System.out.println(x.get(i, j));
-                }
-            }
-            System.out.println("The operation completed after " + iterations + " iterations.");
-        } else {
-            System.out.println("The operation failed after " + iterations + " iterations.");
-            System.out.println("The final estimated x value is: ");
-            for (int i = 0; i < x.getRowDimension(); i++) {
-                for (int j = 0; j < x.getColumnDimension(); j++) {
-                    System.out.println(x.get(i, j));
-                }
-            }
-        }
+        return x;
 
     }
 
@@ -119,6 +104,35 @@ public class Jacobi {
 //        }
 //        return new Matrix(temp);
 //    }
+
+    public int getIterations() {
+        return iterations;
+    }
+
+    public int getMaxIterations() {
+        return maxIterations;
+    }
+
+    public void print() {
+        System.out.println("This is the Jacobi algorithm.");
+        if (iterations < maxIterations) {
+            System.out.println("The final estimated x value is: ");
+            for (int i = 0; i < x.getRowDimension(); i++) {
+                for (int j = 0; j < x.getColumnDimension(); j++) {
+                    System.out.println(x.get(i, j));
+                }
+            }
+            System.out.println("The operation completed after " + iterations + " iterations.");
+        } else {
+            System.out.println("The operation failed after " + iterations + " iterations.");
+            System.out.println("The final estimated x value is: ");
+            for (int i = 0; i < x.getRowDimension(); i++) {
+                for (int j = 0; j < x.getColumnDimension(); j++) {
+                    System.out.println(x.get(i, j));
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         double [][]test = new double[2][3];

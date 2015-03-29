@@ -5,6 +5,7 @@ public class GaussSeidel {
     Matrix x0; //note that this is a vector, stands for the initial guess
     double tol;
     int maxIterations = 1000;
+    int iterations;
 
     //default constructor, assuming that matrix A and vector b are not augmented.
     public GaussSeidel(Matrix a, Matrix y, Matrix x0, double tol) {
@@ -32,7 +33,7 @@ public class GaussSeidel {
         this.x0 = x0;
         this.tol = tol;
     }
-    public void gauss_seidel() {
+    public Matrix gauss_seidel() {
         int n = a.getColumnDimension();
         double[][] original = a.getArrayCopy();
         double[][] s = new double[n][n];
@@ -51,7 +52,7 @@ public class GaussSeidel {
         Matrix finalS = new Matrix(s);
         Matrix finalT = new Matrix(t);
 
-        int iterations = 0;
+        iterations = 0;
         Matrix previousX = x0;
         boolean keepLooping = true;
         while (keepLooping) {
@@ -73,7 +74,25 @@ public class GaussSeidel {
                 keepLooping = false;
             }
         }
+        return x;
+    }
 
+    public double vectorNorm(Matrix a) {
+        if (a.getColumnDimension() == 1 || a.getRowDimension() == 1) {
+            double sum = 0;
+            for (int i = 0; i < a.getRowDimension(); i++) {
+                for (int j = 0; j < a.getColumnDimension(); j++) {
+                    sum = sum + Math.pow(a.get(i, j), 2);
+                }
+            }
+            return Math.pow(sum, 0.5);
+        }
+        System.out.println("The entered object was not a vector.");
+        return -1;
+    }
+
+    public void print() {
+        System.out.println("This is the Gauss-Seidel algorithm.");
         if (iterations < maxIterations) {
             System.out.println("The final estimated x value is: ");
             for (int i = 0; i < x.getRowDimension(); i++) {
@@ -91,35 +110,15 @@ public class GaussSeidel {
                 }
             }
         }
-
     }
 
-    public double vectorNorm(Matrix a) {
-        if (a.getColumnDimension() == 1 || a.getRowDimension() == 1) {
-            double sum = 0;
-            for (int i = 0; i < a.getRowDimension(); i++) {
-                for (int j = 0; j < a.getColumnDimension(); j++) {
-                    sum = sum + Math.pow(a.get(i, j), 2);
-                }
-            }
-            return Math.pow(sum, 0.5);
-        }
-        System.out.println("The entered object was not a vector.");
-        return -1;
+    public int getIterations() {
+        return iterations;
     }
-//    public Matrix diagonalInverse(Matrix a) {
-//        double[][] temp = a.getArrayCopy();
-//        int n = a.getColumnDimension();
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j < n; j++) {
-//                if (i == j) {
-//                    temp[i][j] =  1.00 / temp[i][j];
-//                }
-//            }
-//        }
-//        return new Matrix(temp);
-//    }
 
+    public int getMaxIterations() {
+        return maxIterations;
+    }
     public static void main(String[] args) {
         double [][]test = new double[2][3];
         test[0][0] = 4;
