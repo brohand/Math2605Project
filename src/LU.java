@@ -72,15 +72,14 @@ public class LU {
         if (finalLower == null || finalUpper == null) {
             System.out.println("You need to run LU first before solving.");
         } else {
-            Matrix y = solve_qr_b.Solve(finalLower, b);
-            return solve_qr_b.Solve(finalUpper, y);
+            Matrix y = ForwardSubstitution.forwardSubstitution(finalLower, b);
+            return BackwardSubstitution.backSub(finalUpper, y);
         }
             return null;
     }
 
     public double getError() {
         Matrix temp = Multiply.multiply(finalLower, finalUpper);
-        System.out.println(Norm.getNorm(temp.minus(a)));
         return Norm.getNorm(temp.minus(a));
     }
 

@@ -98,12 +98,14 @@ public class Driver {
             lu.lu_fact();
             System.out.println("The error for a hilbert matrix of size " + n + " is " + lu.getError());
             Matrix c = lu.solve(b);
-            System.out.print("The solution, x, for LU is ");
+            System.out.println("The solution, x, for LU is ");
             c.print(c.getRowDimension(), c.getColumnDimension());
-            System.out.println("");
             System.out.print("The error, Hx - b, for LU is ");
             Matrix e = Multiply.multiply(hilbert, c).minus(b);
             System.out.print(Norm.getNorm(e));
+            System.out.println("");
+            System.out.println("----------------------------------------");
+            System.out.println("");
         }
     }
 
