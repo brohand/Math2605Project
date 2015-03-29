@@ -59,9 +59,10 @@ public class Jacobi {
             if (x != null) {
                 previousX = new Matrix(x.getArrayCopy());
             }
-            x = Multiply.multiply(diagonalInverse(finalS), finalT);
-            x = Multiply.multiply(x, previousX);
-            x = x.plus(Multiply.multiply(diagonalInverse(finalS), y));
+//            x = Multiply.multiply(diagonalInverse(finalS), finalT);
+//            x = Multiply.multiply(x, previousX);
+//            x = x.plus(Multiply.multiply(diagonalInverse(finalS), y));
+
 
             iterations++;
             if (iterations >= maxIterations) {
@@ -106,18 +107,18 @@ public class Jacobi {
         System.out.println("The entered object was not a vector.");
         return -1;
     }
-    public Matrix diagonalInverse(Matrix a) {
-        double[][] temp = a.getArrayCopy();
-        int n = a.getColumnDimension();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == j) {
-                    temp[i][j] = 1/temp[i][j];
-                }
-            }
-        }
-        return new Matrix(temp);
-    }
+//    public Matrix diagonalInverse(Matrix a) {
+//        double[][] temp = a.getArrayCopy();
+//        int n = a.getColumnDimension();
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < n; j++) {
+//                if (i == j) {
+//                    temp[i][j] =  1.00 / temp[i][j];
+//                }
+//            }
+//        }
+//        return new Matrix(temp);
+//    }
 
     public static void main(String[] args) {
         double [][]test = new double[2][3];
