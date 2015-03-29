@@ -1,4 +1,3 @@
-import Jama.*;
 public class GaussSeidel {
     Matrix a; //stands for the matrix, A
     Matrix x = null; //note that this is a vector, stands for solving the solution in the iteration

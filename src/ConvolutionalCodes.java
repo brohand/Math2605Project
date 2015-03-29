@@ -1,5 +1,3 @@
-import Jama.Matrix;
-
 import java.util.Random;
 
 public class ConvolutionalCodes {

@@ -1,5 +1,3 @@
-import Jama.Matrix;
-
 public class BackwardSubstitution {
 
     //Please note that this ONLY works on matrices that are

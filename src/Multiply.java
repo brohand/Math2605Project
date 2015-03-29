@@ -1,5 +1,3 @@
-import Jama.Matrix;
-
 /**
  * Multiplies two matrices together
  *

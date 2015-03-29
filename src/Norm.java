@@ -1,5 +1,3 @@
-import Jama.Matrix;
-
 /**
  * Gets the Norm of a Matrix
  *

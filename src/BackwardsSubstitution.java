@@ -1,6 +1,5 @@
 //Jinsong's version of backwards substitution, created because SOMEONE was taking too long
 
-import Jama.Matrix;
 public class BackwardsSubstitution {
 
     //Please note that this ONLY works on matrices that are

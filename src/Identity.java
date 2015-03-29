@@ -1,4 +1,3 @@
-import Jama.Matrix;
 import java.lang.Math;
 public class Identity {
 	public static Matrix getIdentity(int r) {

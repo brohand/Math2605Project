@@ -1,5 +1,3 @@
-import Jama.Matrix;
-
 /**
  * Gets Eigenvalues of a Matrix with Power Method
  *
