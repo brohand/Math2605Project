@@ -41,4 +41,29 @@ public class Multiply {
 
         return new Matrix(c);
     }
+
+    /**
+     * Matrix * Vector
+     *
+     * @param aMatrix input Matrix
+     * @param vVector input Vector
+     * @return Matrix * Vector
+     */
+    public static Vector matrixTimesVector(Matrix aMatrix, Vector vVector) {
+        if(aMatrix == null || vVector == null) {
+            throw new MatrixException("You can't multiply a null matrices or vectors.");
+        }
+        double[][] a = aMatrix.getArray();
+        double[] v = vVector.getArray();
+        if(a.length != v.length) {
+            throw new MatrixException("You can't multiply a Matrix and Vector with different lengths");
+        }
+        double[] vf = new double[a.length];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                vf[i] += a[i][j] * v[j];
+            }
+        }
+        return new Vector(vf);
+    }
 }

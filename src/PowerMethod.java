@@ -49,28 +49,17 @@ public class PowerMethod {
      * @return double as vector representation of an iteration of Power method
      */
     private static Vector oneIteration(Matrix a,  Vector uk) {
-        Vector Auk = matrixTimesVector(a, uk);
+        Vector Auk = Multiply.matrixTimesVector(a, uk);
         eigenvalue = Auk.maxValue();
         return Auk.times(1.0 / Auk.maxValue());
     }
-    /**
-     * Matrix * Vector
-     *
-     * @param aMatrix input Matrix
-     * @param v input Vector
-     * @return Matrix * Vector
-     */
-    private static Vector matrixTimesVector(Matrix aMatrix, Vector v) {
-        double[][] a = aMatrix.getArrayCopy();
-        double[] vf = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < a[0].length; j++) {
-                vf[i] += a[i][j] * v.get(j);
-            }
-        }
-        return new Vector(vf);
-    }
 
+    /**
+     * Gets an already calculated eigenvector
+     *
+     * @throws PowerMethodException if eigenvector hasn't been created yet
+     * @return eigenvector
+     */
     public static Vector getEigenvector() {
         if (eigenvector == null) {
             throw new PowerMethodException("Eigenvector has not been initialized.");
@@ -78,6 +67,12 @@ public class PowerMethod {
         return eigenvector;
     }
 
+    /**
+     * Gets an already calculated eigenvalue
+     *
+     * @throws PowerMethodException if eigenvalue hasn't been created yet
+     * @return eigenvalue
+     */
     public static double getEigenvalue() {
         if (eigenvalue == Integer.MIN_VALUE) {
             throw new PowerMethodException("Eigenvalue has not been initialized.");
@@ -85,6 +80,12 @@ public class PowerMethod {
         return eigenvalue;
     }
 
+    /**
+     * Gets an already calculated number of iterations
+     *
+     * @throws PowerMethodException if iterations hasn't been created yet
+     * @return iterations
+     */
     public static int getIterations() {
         if (iterations == 0l) {
             throw new PowerMethodException("Iterations has not been initialized.");
