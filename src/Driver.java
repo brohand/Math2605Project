@@ -1,9 +1,11 @@
 /**
  * Created by super_000 on 3/9/2015.
  */
+
 import Jama.*;
 import java.text.NumberFormat;
 import java.util.Scanner;
+import com.googlecode.charts4j.*;
 public class Driver {
     private static Scanner darkly = new Scanner(System.in);
     public static void main(String[] args) {
@@ -55,21 +57,34 @@ public class Driver {
     public static void qrVisualizer() {
         System.out.println("QR Factorization for Hilbert Matricies");
         System.out.println("");
+        double[] y = new double[19];
+        double[] qrError = new double[19];
+        double[] hxError = new double[19];
 
+        int i = 0;
         for(int n = 2; n <= 20; n++) {
             Matrix hilbert = createHilbert(n, n);
             Matrix b = createB(n);
             Matrix xSol = solve_qr_b.Solve(hilbert, b);
             System.out.println("For Hilbert of size " + n + ":");
             System.out.println("Xsol = ");
-            xSol.print(n , n);
+            xSol.print(n, n);
             System.out.print("------");
-            System.out.print("||QR - H|| = " + Householder.error(hilbert));
-            System.out.println("------ ||HXsol - b||" + Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b)));
-
-
-
+            double qrErr = Householder.error(hilbert);
+            System.out.print("||QR - H|| = " + qrErr);
+            double hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
+            System.out.println("------ ||HXsol - b||" + hxErr);
+            y[i] = n;
+            qrError[i] = qrErr;
+            hxError[i] = hxErr;
+            i++;
         }
+
+        Data Y = new Data(y);
+        Data qrX = new Data(qrError);
+        Data hxX = new Data(hxError);
+
+
 
     }
 
