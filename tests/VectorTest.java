@@ -53,4 +53,10 @@ public class VectorTest {
         Vector a = new Vector(1,2,3,4,5);
         assertEquals(5, a.length());
     }
+
+    @Test
+    public void testTimes() throws Exception {
+        Vector a = new Vector(1,2,3,4,5);
+        assertEquals(new Vector(2,4,6,8,10), a.times(2));
+    }
 }

@@ -84,6 +84,20 @@ public class Vector {
     }
 
     /**
+     * Multiplies a Vector by a constant
+     *
+     * @param c constant to multiply by
+     * @return this vector * c
+     */
+    public Vector times(double c) {
+        double[] a = new double[v.length];
+        for (int i = 0; i < v.length; i++) {
+            a[i] = c * v[i];
+        }
+        return new Vector(a);
+    }
+
+    /**
      * Gets the norm of this Vector
      *
      * @return vector norm
