@@ -320,9 +320,13 @@ public class Matrix {
     /**
      * Gets the original Matrix from an augmented Matrix
      *
+     * @throws IllegalArgumentException if Matrix is not augmented
      * @return regular Matrix
      */
     public Matrix getAugmentedMatrix() {
+        if (getColumnDimension() < 2) {
+            throw new IllegalArgumentException("This Matrix is not augmented.");
+        }
         Matrix A = new Matrix(getRowDimension(), getColumnDimension() - 1);
         for (int i = 0; i < A.getRowDimension(); i++) {
             for (int j = 0; j < A.getColumnDimension(); j++) {

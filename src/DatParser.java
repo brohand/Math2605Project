@@ -17,29 +17,34 @@ public class DatParser {
      * @throws FileNotFoundException
      */
     public static Matrix datToMatrix(File a) throws FileNotFoundException{
-        LinkedList<String> lines = new LinkedList<>();
-        Scanner file = new Scanner(a);
-        while (file.hasNextLine()) {
-            lines.add(file.nextLine());
-        }
-        double[][] m = new double[lines.size()][];
-        for(int i = 0; i < m.length; i++) {
-            String b = lines.remove().trim();
-            String[] line;
-            if (b.contains(" ")) {
-                line = b.split("\\s+");
-            } else if (b.contains(",")){
-                line = b.split(",");
-            } else {
-                throw new IllegalArgumentException("Invalid Matrix format. Separate colummns with a space, and rows with a new line.");
+        try {
+            LinkedList<String> lines = new LinkedList<>();
+            Scanner file = new Scanner(a);
+            while (file.hasNextLine()) {
+                lines.add(file.nextLine());
             }
-            double[] row = new double[line.length];
-            for(int j = 0; j < row.length; j++) {
-                row[j] = Double.parseDouble(line[j]);
+            double[][] m = new double[lines.size()][];
+            for (int i = 0; i < m.length; i++) {
+                String b = lines.remove().trim();
+                String[] line;
+                if (b.contains(" ")) {
+                    line = b.split("\\s+");
+                } else if (b.contains(",")) {
+                    line = b.split(",");
+                } else {
+                    line = new String[1];
+                    line[0] = b;
+                }
+                double[] row = new double[line.length];
+                for (int j = 0; j < row.length; j++) {
+                    row[j] = Double.parseDouble(line[j]);
+                }
+                m[i] = row;
             }
-            m[i] = row;
+            return new Matrix(m);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid Matrix format. See documentation for proper format of Matrices\n" + e.getMessage());
         }
-        return new Matrix(m);
     }
 
     /**

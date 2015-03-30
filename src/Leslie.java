@@ -37,6 +37,13 @@ public class Leslie {
         }
     }
 
+    /**
+     * Runs a Leslie population simulation
+     *
+     * @param a Leslie Matrix
+     * @param xk initial population vector
+     * @param iterations number of iterations
+     */
     public static void runSimulation(Matrix a, Vector xk, int iterations) {
         System.out.println("Iteration: 0 Vector: " + xk);
         for (int i = 1; i <= iterations; i++) {
