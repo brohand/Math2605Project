@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Turns dat files into Matrices and Matrices into dat files
@@ -11,6 +9,16 @@ import java.util.Scanner;
  */
 public class DatParser {
 
+    public static void main(String[] args) {
+        try {
+            datToMatrix(new File("stuff.dat")).print(4,4);
+            datToMatrix(new File("stuff2.dat")).print(4,4);
+            datToMatrix(new File("stuff3.dat")).print(4,4);
+        } catch(Exception e) {
+            System.out.println("fuck you");
+        }
+    }
+
     /**
      * Converts a file to a Matrix
      *
@@ -19,22 +27,25 @@ public class DatParser {
      * @throws FileNotFoundException
      */
     public static Matrix datToMatrix(File a) throws FileNotFoundException{
-        List lines = new ArrayList();
+        LinkedList<String> lines = new LinkedList<>();
         Scanner file = new Scanner(a);
         while (file.hasNextLine()) {
             lines.add(file.nextLine());
         }
         double[][] m = new double[lines.size()][];
         for(int i = 0; i < m.length; i++) {
-            String line = (String)lines.get(i);
-            Scanner lineScanner = new Scanner(line);
-            List<Double> columns = new ArrayList();
-            while(lineScanner.hasNextDouble()) {
-                columns.add(lineScanner.nextDouble());
+            String b = lines.remove().trim();
+            String[] line;
+            if (b.contains(" ")) {
+                line = b.split("\\s+");
+            } else if (b.contains(",")){
+                line = b.split(",");
+            } else {
+                throw new IllegalArgumentException("Invalid Matrix format. Separate colummns with a space, and rows with a new line.");
             }
-            double[] row = new double[columns.size()];
-            for (int j = 0; j < row.length; j++) {
-                row[j] = columns.get(j);
+            double[] row = new double[line.length];
+            for(int j = 0; j < row.length; j++) {
+                row[j] = Double.parseDouble(line[j]);
             }
             m[i] = row;
         }
