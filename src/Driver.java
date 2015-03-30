@@ -5,41 +5,163 @@
 import java.text.NumberFormat;
 import java.util.Scanner;
 //import com.googlecode.charts4j.*;
-
+import java.io.*;
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
 public class Driver {
     private static Scanner darkly = new Scanner(System.in);
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(5);
-
-        System.out.println("HILBERT ERROR VISUALIZATION PROGRAM ULTIMATE ARCADE EDITION v0.0000001");
-        System.out.println("CHOOSE THY FATE");
-        System.out.println("1. QR Visualization");
-        System.out.println("2. LU Visualization");
-        System.out.println("3. Test HouseHolders");
-        System.out.println("4. Test Givens");
-
-
-        int fate = darkly.nextInt();
-        switch(fate) {
-            case 1:
-                qrVisualizer();
-            case 2:
-                luVisualizer();
-            case 3:
-                System.out.println("Enter a valid .dat file (file should be placed in project root)");
+        boolean loop = true;
+        while(loop) {
+            System.out.println("HILBERT ERROR VISUALIZATION PROGRAM ULTIMATE ARCADE EDITION v0.0000001");
+            System.out.println("CHOOSE THY FATE");
+            System.out.println("1. Hilbert QR Visualization");
+            System.out.println("2. Hilbert LU Visualization");
+            System.out.println("3. Test Matrix Functions");
+            System.out.println("4. Exit");
 
 
+            int fate = darkly.nextInt();
+            switch (fate) {
+                case 1:
+                    qrVisualizer();
+                    break;
+                case 2:
+                    luVisualizer();
+                    break;
+                case 3:
+                    matrixMenu();
+                    break;
+                case 4:
+                    loop = false;
+                    break;
+
+
+            }
         }
 
+    }
+
+    public static void matrixMenu(){
+        boolean loop = true;
+
+            System.out.println("Enter an augmented matrix as a .dat file");
+            try {
+                File augFile = new File(darkly.next());
+
+        while(loop) {
+            Matrix A = augSplitA(augFile);
+            Matrix b = augSplitb(augFile);
+            System.out.println("What would you liked to do with the matrix?");
+            System.out.println("1. Find Q and R of A with HouseHolders");
+            System.out.println("2. Find Q and R of A with Givens");
+            System.out.println("3. Ax = b with HouseHolders");
+            System.out.println("4. Ax = b with Givens");
+            System.out.println("5. Enter different matrix");
+            System.out.println("6. Go back");
+
+            switch(darkly.nextInt()) {
+                case 1:
+
+                    Matrix Q = Householder.getQ(A);
+                    Matrix R = Householder.getR(A);
+                    A.print(A.getRowDimension(), A.getColumnDimension());
+                    System.out.print(" = ");
+                    Q.print(Q.getRowDimension(), Q.getColumnDimension());
+                    System.out.print(" * ");
+                    R.print(R.getRowDimension(), R.getColumnDimension());
+                    System.out.println();
+                    System.out.print("Error = " + Householder.error(A));
+                    String pause = darkly.next();
+                    break;
+                case 2:
+                    GivensQR qrA = new GivensQR(A);
+                    Q = qrA.Q;
+                    R = qrA.R;
+                    A.print(A.getRowDimension(), A.getColumnDimension());
+                    System.out.print(" = ");
+                    Q.print(Q.getRowDimension(), Q.getColumnDimension());
+                    System.out.print(" * ");
+                    R.print(R.getRowDimension(), R.getColumnDimension());
+                    System.out.println();
+                    System.out.print("Error = " + qrA.getError());
+                    pause = darkly.next();
+                    break;
+                case 3:
+                    Matrix sol = solve_qr_b.houseSolve(A, b);
+                    A.print(A.getRowDimension(), A.getColumnDimension());
+                    System.out.print(" * ");
+                    sol.print(sol.getRowDimension(), 0);
+                    System.out.print(" = ");
+                    b.print(b.getRowDimension(), 0);
+                    System.out.print("Error = " + A.times(sol).minus(b).norm());
+                    pause = darkly.next();
+                    break;
+                case 4:
+                    sol = solve_qr_b.givensSolve(A, b);
+                    A.print(A.getRowDimension(), A.getColumnDimension());
+                    System.out.print(" * ");
+                    sol.print(sol.getRowDimension(), 0);
+                    System.out.print(" = ");
+                    b.print(b.getRowDimension(), 0);
+                    System.out.print("Error = " + A.times(sol).minus(b).norm());
+                    pause = darkly.next();
+                    break;
+                case 5:
+                    loop = false;
+                    matrixMenu();
+                case 6:
+                    loop = false;
+                    break;
 
 
 
+            }
+        }
+            } catch (Exception e) {
+                System.out.println("Not a valid dat file");
+            }
+    }
 
+    public static Matrix augSplitA(File a) throws FileNotFoundException {
+        Matrix Aug = DatParser.datToMatrix(a);
+        Matrix b = new Matrix(Aug.getRowDimension(), 1);
+        Matrix A = new Matrix(Aug.getRowDimension(), Aug.getColumnDimension() - 1);
+
+        for(int row = 0; row < Aug.getRowDimension(); row++) {
+            for(int col = 0; col < Aug.getColumnDimension(); col++) {
+                if(col != Aug.getColumnDimension() - 1) {
+                    A.set(row, col, Aug.get(row, col));
+                } else {
+                    b.set(row, 0, Aug.get(row, col));
+                }
+            }
+        }
+
+        return A;
+
+    }
+
+    public static Matrix augSplitb(File a) throws FileNotFoundException {
+        Matrix Aug = DatParser.datToMatrix(a);
+        Matrix b = new Matrix(Aug.getRowDimension(), 1);
+        Matrix A = new Matrix(Aug.getRowDimension(), Aug.getColumnDimension() - 1);
+
+        for(int row = 0; row < Aug.getRowDimension(); row++) {
+            for(int col = 0; col < Aug.getColumnDimension(); col++) {
+                if(col != Aug.getColumnDimension() - 1) {
+                    A.set(row, col, Aug.get(row, col));
+                } else {
+                    b.set(row, 0, Aug.get(row, col));
+                }
+            }
+        }
+
+        return b;
 
     }
 
