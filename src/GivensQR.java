@@ -48,7 +48,7 @@ public class GivensQR {
                     Matrix newGivens = new Matrix(newG);
                     Givens.add(newGivens.transpose());
 
-                    mat = Multiply.multiply(newGivens, mat);
+                    mat = newGivens.times(mat);
 
             }
         }
@@ -62,7 +62,7 @@ public class GivensQR {
                 Q = Givens.get(i);
             }
             if(i + 1 < Givens.size()) {
-                Q = Multiply.multiply(Q, Givens.get(i + 1));
+                Q = Q.times(Givens.get(i + 1));
             }
 
         }
@@ -70,7 +70,7 @@ public class GivensQR {
         return Q;
     }
     public double findError() {
-        error = Norm.getNorm((Multiply.multiply(Q,R).minus(matrix)));
+        error = Q.times(R).minus(matrix).norm();
         return error;
     }
 

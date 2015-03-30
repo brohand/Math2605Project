@@ -5,7 +5,7 @@ public class solve_qr_b {
     public static Matrix houseSolve(Matrix A, Matrix b) {
         GivensQR qrA = new GivensQR(A);
 
-        Matrix QTb = Multiply.multiply(Householder.getQ(A).transpose(),b);
+        Matrix QTb = Householder.getQ(A).transpose().times(b);
         Matrix sol = BackwardSubstitution.backSub(Householder.getR(A), QTb);
 
         return sol;
@@ -17,7 +17,7 @@ public class solve_qr_b {
     public static Matrix givensSolve(Matrix A, Matrix b) {
         GivensQR qrA = new GivensQR(A);
 
-        Matrix QTb = Multiply.multiply(qrA.Q.transpose(),b);
+        Matrix QTb = qrA.Q.transpose().times(b);
         Matrix sol = BackwardSubstitution.backSub(qrA.R, QTb);
 
         return sol;

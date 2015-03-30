@@ -235,8 +235,8 @@ public class ConvolutionalCodes {
         Matrix a0 = generateA0(n);
         Matrix a1 = generateA1(n);
 
-        Matrix y0 = Multiply.multiply(a0, x);
-        Matrix y1 = Multiply.multiply(a1, x);
+        Matrix y0 = a0.times(x);
+        Matrix y1 = a1.times(x);
 
         double[][] y0Temp = y0.getArray();
         double[][] y1Temp = y1.getArray();

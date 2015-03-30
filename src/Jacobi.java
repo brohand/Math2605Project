@@ -59,7 +59,8 @@ public class Jacobi {
             if (x != null) {
                 previousX = new Matrix(x.getArrayCopy());
             }
-            x = ForwardSubstitution.forwardSubstitution(finalS, Multiply.multiply(finalT, previousX).plus(y));
+            x = ForwardSubstitution.forwardSubstitution(finalS, finalT.times(previousX).plus(y));
+
 //            x = Multiply.multiply(diagonalInverse(finalS), finalT);
 //            x = Multiply.multiply(x, previousX);
 //            x = x.plus(Multiply.multiply(diagonalInverse(finalS), y));

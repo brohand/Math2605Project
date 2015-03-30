@@ -76,7 +76,7 @@ public class Driver {
             System.out.println("||QR - H|| = " + qrhErr);
 
             //Solution Error with HouseHolders
-            double hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
+            double hxErr = hilbert.times(xSol).minus(b).norm();
             System.out.println("------ ||HXsol - b||" + hxErr);
 
             System.out.println(":)");
@@ -91,7 +91,7 @@ public class Driver {
             System.out.println("||QR - H|| = " + qrGErr);
 
             //Solution Error with givens
-            hxErr = Norm.getNorm(Multiply.multiply(hilbert, xSol).minus(b));
+            hxErr = hilbert.times(xSol).minus(b).norm();
             System.out.println("------ ||HXsol - b||" + hxErr);
             x[i] = n;
             qrhError[i] = qrhErr;
@@ -137,8 +137,8 @@ public class Driver {
                 System.out.println(c.get(i, 0));
             }
             System.out.print("The error, Hx - b, for LU is ");
-            Matrix e = Multiply.multiply(hilbert, c).minus(b);
-            System.out.print(Norm.getNorm(e));
+            Matrix e = hilbert.times(c).minus(b);
+            System.out.print(e.norm());
             System.out.println("");
             System.out.println("----------------------------------------");
             System.out.println("");

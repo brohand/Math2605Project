@@ -71,7 +71,7 @@ public class LU {
                     }
                 }
             }
-            finalLower = Multiply.multiply(finalLower, tempG);
+            finalLower = finalLower.times(tempG);
         }
         finalUpper = new Matrix(upper);
         //finalLower.print(nf, 15);
@@ -102,8 +102,8 @@ public class LU {
     }
 
     public double getError() {
-        Matrix temp = Multiply.multiply(finalLower, finalUpper);
-        return Norm.getNorm(temp.minus(a));
+        Matrix temp = finalLower.times(finalUpper);
+        return temp.minus(a).norm();
     }
 
     public static void main(String[] args) {
