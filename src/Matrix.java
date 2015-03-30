@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * Representation of a Matrix
  *
- * @author Patrick Tam
+ * @author Patrick Tam, Jinsong Han/Aaron Andrews
  * @version 0.1
  */
 public class Matrix {
@@ -224,6 +224,100 @@ public class Matrix {
     }
 
     /**
+     * Performs a forwards substitution to solve Ax=b
+     * on a Lower triangular Matrix
+     *
+     * @param bV the answer Vector
+     * @return x the solution Vector
+     */
+    public Vector forwardsSubstitution(Vector bV) {
+        if (getRowDimension() < 2 || getColumnDimension() < 2) {
+            throw new IllegalArgumentException("The Matrix must have greater than 1 row/column");
+        }
+
+        if (getRowDimension() != bV.length()) {
+            throw new IllegalArgumentException("You can't input a Vector with a different length then the Matrix");
+        }
+        for (int i = 0; i < getRowDimension(); i++) {
+            for (int j = getColumnDimension() - 1; j > i; j--) {
+                if (get(i, j) != 0) {
+                    throw new IllegalArgumentException("The entered Matrix is NOT lower triangular.");
+                }
+            }
+        }
+        /**
+         * Originally part of the ForwardSubstitution class
+         *
+         * @author Jinsong Han
+         */
+        double[][] a = getArrayCopy();
+        double[] b = bV.getArrayCopy();
+        double[] x = new double[getRowDimension()];
+        for (int j = 0; j < getRowDimension(); j++) {
+            for (int k = 0; k < getColumnDimension(); k++) {
+                if (k == 0 && j == 0) {
+                    x[j] = b[j] / a[j][k];
+                } else {
+                    if (k == j) {
+                        double temp = 0;
+                        for (int l = k - 1; l >= 0; l--) {
+                            temp = temp + (x[l] * a[j][l]);
+                        }
+                        x[j] = (b[k] - temp) / a[j][k];
+                    }
+                }
+            }
+        }
+        return new Vector(x);
+    }
+
+    /**
+     * Performs a backwards substitution to solve Ax=b
+     * the current Matrix MUST BE Upper triangular
+     * @param b the answer Vector
+     * @return x the solution Vector
+     */
+    public Vector backwardsSubstitution(Vector b) {
+        if (getRowDimension() < 2 || getColumnDimension() < 2) {
+            throw new IllegalArgumentException("The Matrix must have greater than 1 row/column");
+        }
+        for (int i = 1; i < getRowDimension(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (get(i, j) != 0) {
+                    throw new IllegalArgumentException("The entered Matrix is NOT upper triangular");
+                }
+            }
+        }
+
+        if (getRowDimension() != b.length()) {
+            throw new IllegalArgumentException("You can't input a Vector with a different length then the Matrix");
+        }
+
+        /**
+         * Originally part of the BackwardSubstitution class
+         *
+         * @author Aaron Andrews
+         */
+        double[] sol = new double[getColumnDimension()];
+
+        for(int row = getRowDimension() - 1; row >= 0; row--) {
+            double currPiv = get(row, row);
+            double x = b.get(row) / currPiv;
+            for(int i = 0; i < getColumnDimension(); i++) {
+                double mod = 1;
+                if(i != row) {
+                    if(i != 0 && i < b.length()) {
+                        mod = sol[i];
+                    }
+                    x -= mod*get(row, i) / currPiv;
+                }
+            }
+            sol[row] = x;
+        }
+        return new Vector(sol);
+    }
+
+    /**
      * Gets the number of rows
      *
      * @return number of rows
@@ -263,6 +357,27 @@ public class Matrix {
             }
         }
         return copy;
+    }
+
+    /**
+     * Equals method
+     *
+     * @param other Object
+     * @return True if matrices are equal, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (this == other) return true;
+        if (!(other instanceof Matrix)) return false;
+        Matrix b = (Matrix)other;
+        if (m.length != b.getArray().length || m[0].length != b.getArray()[0].length) return false;
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                if (m[i][j] != b.get(i,j)) return false;
+            }
+        }
+        return true;
     }
 
     /**

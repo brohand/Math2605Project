@@ -122,10 +122,21 @@ public class Vector {
     /**
      * Gets backing array
      *
-     * @return double arra representation of vector
+     * @return double array representation of vector
      */
     public double[] getArray() {
         return v;
+    }
+
+    /**
+     * Gets a copy of the backing array
+     */
+    public double[] getArrayCopy() {
+        double[] a = new double[v.length];
+        for (int i = 0; i < v.length; i++) {
+            a[i] = v[i];
+        }
+        return a;
     }
 
     /**
