@@ -37,6 +37,8 @@ public class Driver {
                     matrixMenu();
                     break;
                 case 4:
+                    System.out.println("");
+                    System.out.println("JU");
                     loop = false;
                     break;
 
@@ -46,19 +48,18 @@ public class Driver {
 
     }
 
-    public static void matrixMenu(){
+    public static void matrixMenu() throws FileNotFoundException{
         boolean loop = true;
 
             System.out.println("Enter an augmented matrix as a .dat file");
-            try {
-                File augFile = new File(darkly.next());
+
+                //File augFile = new File(darkly.next());
 
         while(loop) {
-            Matrix A = augSplitA(augFile);
-            Matrix b = augSplitb(augFile);
-            System.out.println("What would you liked to do with the matrix?");
-            System.out.println("1. Find Q and R of A with HouseHolders");
-            System.out.println("2. Find Q and R of A with Givens");
+            //Matrix
+            System.out.println("What would you liked to do?");
+            System.out.println("1. Find Q and R of a matrix with HouseHolders");
+            System.out.println("2. Find Q and R of matrix with Givens");
             System.out.println("3. Ax = b with HouseHolders");
             System.out.println("4. Ax = b with Givens");
             System.out.println("5. Enter different matrix");
@@ -66,7 +67,8 @@ public class Driver {
 
             switch(darkly.nextInt()) {
                 case 1:
-
+                    System.out.println("Enter a matrix as a .dat file");
+                    Matrix A = DatParser.datToMatrix(new File(darkly.next()));
                     Matrix Q = Householder.getQ(A);
                     Matrix R = Householder.getR(A);
                     A.print(A.getRowDimension(), A.getColumnDimension());
@@ -79,6 +81,8 @@ public class Driver {
                     String pause = darkly.next();
                     break;
                 case 2:
+                    System.out.println("Enter a matrix as a .dat file");
+                    A = DatParser.datToMatrix(new File(darkly.next()));
                     GivensQR qrA = new GivensQR(A);
                     Q = qrA.Q;
                     R = qrA.R;
@@ -92,6 +96,11 @@ public class Driver {
                     pause = darkly.next();
                     break;
                 case 3:
+
+                    System.out.println("Enter an augmented matrix as a .dat file");
+                    File augFile = new File(darkly.next());
+                    A = augSplitA(augFile);
+                    Matrix b = augSplitb(augFile);
                     Matrix sol = solve_qr_b.houseSolve(A, b);
                     A.print(A.getRowDimension(), A.getColumnDimension());
                     System.out.print(" * ");
@@ -102,6 +111,10 @@ public class Driver {
                     pause = darkly.next();
                     break;
                 case 4:
+                    System.out.println("Enter an augmented matrix as a .dat file");
+                    augFile = new File(darkly.next());
+                    A = augSplitA(augFile);
+                    b = augSplitb(augFile);
                     sol = solve_qr_b.givensSolve(A, b);
                     A.print(A.getRowDimension(), A.getColumnDimension());
                     System.out.print(" * ");
@@ -122,9 +135,7 @@ public class Driver {
 
             }
         }
-            } catch (Exception e) {
-                System.out.println("Not a valid dat file");
-            }
+
     }
 
     public static Matrix augSplitA(File a) throws FileNotFoundException {
