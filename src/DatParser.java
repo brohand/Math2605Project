@@ -9,16 +9,6 @@ import java.util.*;
  */
 public class DatParser {
 
-    public static void main(String[] args) {
-        try {
-            datToMatrix(new File("stuff.dat")).print(4,4);
-            datToMatrix(new File("stuff2.dat")).print(4,4);
-            datToMatrix(new File("stuff3.dat")).print(4,4);
-        } catch(Exception e) {
-            System.out.println("fuck you");
-        }
-    }
-
     /**
      * Converts a file to a Matrix
      *
