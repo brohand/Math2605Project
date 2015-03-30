@@ -51,5 +51,6 @@ public class PowerMethodDriver {
                 System.out.println("Invalid Input. Please retry \n");
             }
         }
+        System.out.println("y");
     }
 }
