@@ -42,6 +42,8 @@ public class DatParser {
                 m[i] = row;
             }
             return new Matrix(m);
+        } catch(FileNotFoundException e) {
+            throw e;
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid Matrix format. See documentation for proper format of Matrices\n" + e.getMessage());
         }
