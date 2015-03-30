@@ -30,6 +30,15 @@ public class Vector {
     }
 
     /**
+     * Sets a value in the Vector
+     * @param i index of the value to set
+     * @param v value to insert
+     */
+    public void set(int i, double v) {
+        this.v[i] = v;
+    }
+
+    /**
      * Subtracts two vectors
      * this - v
      *
