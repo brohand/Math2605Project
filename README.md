@@ -1,2 +1,10 @@
 # Math2605Project
-MATRICES &amp; SHIT
+MATRICES AND SHIT!
+
+MATH 2605 PROJECT
+
+Aaron did most of part one.
+Jinsong did most of part two.
+Patrick held food for us.
+
+fuck you guys
