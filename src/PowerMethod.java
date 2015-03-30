@@ -10,6 +10,7 @@ public class PowerMethod {
 
     private static Vector eigenvector = null;
     private static double eigenvalue = Integer.MIN_VALUE;
+    private static double eigenvaluePrev = Integer.MIN_VALUE;
     private static int iterations = 0;
 
 
@@ -26,7 +27,7 @@ public class PowerMethod {
         Vector uk = u0;
         Vector uk1 = oneIteration(a, u0);
         int i = 1;
-        while (uk1.minus(uk).norm() > tol) {
+        while (Math.abs(eigenvaluePrev - eigenvalue) > tol) {
             if (i >= MAX_ITERATIONS) {
                 throw new PowerMethodException("Failed to converge after " + i + " iterations.");
             }
@@ -47,6 +48,7 @@ public class PowerMethod {
      * @return double as vector representation of an iteration of Power method
      */
     private static Vector oneIteration(Matrix a,  Vector uk) {
+        eigenvaluePrev = eigenvalue;
         Vector Auk = a.times(uk);
         eigenvalue = Auk.maxValue();
         return Auk.times(1.0 / Auk.maxValue());
