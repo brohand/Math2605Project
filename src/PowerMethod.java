@@ -14,6 +14,13 @@ public class PowerMethod {
     private static int iterations = 0;
 
 
+    public static void powerMethod(Matrix a, double tol) {
+        double[] u0 = new double[a.getRowDimension()];
+        for (int i = 0; i < u0.length; i++) {
+            u0[i] = 1;
+        }
+        powerMethod(a, tol, new Vector(u0));
+    }
     /**
      * Uses Power Method to get the
      *  - maximum eigenvalue
@@ -21,6 +28,8 @@ public class PowerMethod {
      *  - the number of iterations
      *
      * @param a input Matrix
+     * @param tol tolerance
+     * @param u0 intial guess vector
      * @return max eigenvalue
      */
     public static void powerMethod(Matrix a, double tol, Vector u0) {
