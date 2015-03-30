@@ -11,6 +11,15 @@ public class Vector {
     private double[] v;
 
     /**
+     * Constructor creates an empty Vector object
+     *
+     * @param i length of vector
+     */
+    public Vector(int i) {
+        this(new double[i]);
+    }
+
+    /**
      * Constructor creates Vector object
      *
      * @param v double representation of vector

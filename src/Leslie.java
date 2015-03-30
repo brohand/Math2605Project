@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Calculates a Leslie Matrix
  *
@@ -6,22 +9,32 @@
  */
 public class Leslie {
 
+    /**
+     * Runs a Leslie matrix to simulate population
+     *
+     * @param args filename(of an augmented matrix), iterations
+     */
     public static void main(String[] args) {
-        double[][] a = {
-                {0, 1.2,1.1, .9, .1, 0, 0, 0, 0},
-                {.7, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, .85, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, .9, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, .9, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, .88, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, .8, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, .77, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, .40, 0}
-        };
-        Matrix A = new Matrix(a);
-        Vector x0 = new Vector(2.1, 1.9, 1.8, 2.1, 1.0, 1.7, 1.2, 0.9, 0.5);
-        x0 = x0.times(Math.pow(10,5));
-        runSimulation(A, x0, 10);
+        try {
+            Matrix leslie = DatParser.datToMatrix(new File(args[0]));
+            int iterations = Integer.parseInt(args[1]);
+
+            System.out.println("Augmented Leslie Matrix:");
+            leslie.print(3,3);
+
+            System.out.println("Leslie Matrix:");
+            leslie.getAugmentedMatrix().print(3,3);
+
+            System.out.println("Population Vector");
+            System.out.println(leslie.getAugmentedVector().toString() + "\n");
+
+            runSimulation(leslie.getAugmentedMatrix(), leslie.getAugmentedVector(), iterations);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found: " + e.getMessage());
+        } catch(Exception e) {
+            System.out.println("Whoops! " + e.getMessage());
+        }
     }
 
     public static void runSimulation(Matrix a, Vector xk, int iterations) {

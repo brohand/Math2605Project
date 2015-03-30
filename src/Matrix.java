@@ -318,6 +318,34 @@ public class Matrix {
     }
 
     /**
+     * Gets the original Matrix from an augmented Matrix
+     *
+     * @return regular Matrix
+     */
+    public Matrix getAugmentedMatrix() {
+        Matrix A = new Matrix(getRowDimension(), getColumnDimension() - 1);
+        for (int i = 0; i < A.getRowDimension(); i++) {
+            for (int j = 0; j < A.getColumnDimension(); j++) {
+                A.set(i,j, get(i,j));
+            }
+        }
+        return A;
+    }
+
+    /**
+     * Gets the original Vector from an augmented Matrix
+     *
+     * @return regular vector
+     */
+    public Vector getAugmentedVector() {
+        Vector V = new Vector(getRowDimension());
+        for (int i = 0; i < getRowDimension(); i++) {
+            V.set(i, get(i, getColumnDimension() - 1));
+        }
+        return V;
+    }
+
+    /**
      * Gets the number of rows
      *
      * @return number of rows
