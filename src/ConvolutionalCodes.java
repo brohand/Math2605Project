@@ -32,7 +32,7 @@ public class ConvolutionalCodes {
                     System.out.println("");
                     System.out.println("Enter the stream that you would like to decode.");
                     System.out.println("Note that the length of the stream must be even.");
-                    System.out.println("Please enter the stream without commas nor brackets like this: 10011100");
+                    System.out.println("Please enter the stream without commas nor brackets like this: 1101010111011100");
                     System.out.print("Stream: ");
                     String temp = kbReader.next();
                     System.out.println("");
@@ -108,7 +108,7 @@ public class ConvolutionalCodes {
                     }
                 }
             } else if (fate == 4) {
-                System.out.println("fuck you");
+                System.out.println("ic");
                 keepLooping = false;
             } else {
                 System.out.println("Invalid response.");
@@ -118,7 +118,7 @@ public class ConvolutionalCodes {
         } while (keepLooping);
     }
 
-    public static String decode(String n, int method, double tol) {
+    public static void decode(String n, int method, double tol) {
         System.out.println("The program will now attempt to decode the sequence, " + n + ".");
         Matrix y0 = new Matrix(n.length() / 2, 1);
         Matrix y1 = new Matrix(n.length() / 2, 1);
@@ -145,7 +145,9 @@ public class ConvolutionalCodes {
         }
 
         String xJ = "";
+        String xJTemp = "";
         String xG = "";
+        String xGTemp = "";
 
         if (method == 1 || method == 3) {
             System.out.println("------------------------------");
@@ -158,6 +160,7 @@ public class ConvolutionalCodes {
                 xJ = xJ + "" + (Math.abs((int) xJacobi.get(i, 0) % 2));
             }
             System.out.println(xJ);
+            xJTemp = xJ;
             System.out.println("The iteration took " + j.getIterations() + " iterations.");
             if (j.getIterations() >= j.getMaxIterations()) {
                 System.out.println("The iteration was terminated because it hit the max number of iterations allowed.");
@@ -175,9 +178,6 @@ public class ConvolutionalCodes {
             if (j.getIterations() >= j.getMaxIterations()) {
                 System.out.println("The iteration was terminated because it hit the max number of iterations allowed.");
             }
-            if (method == 1) {
-                return xJ;
-            }
         }
 
         if (method == 2 || method == 3) {
@@ -191,6 +191,7 @@ public class ConvolutionalCodes {
                 xG = xG + "" + (Math.abs((int)xGauss.get(i, 0) % 2));
             }
             System.out.println(xG);
+            xGTemp = xG;
             System.out.println("The iteration took " + g.getIterations() + " iterations.");
             if (g.getIterations() >= g.getMaxIterations()) {
                 System.out.println("The iteration was terminated because it hit the max number of iterations allowed.");
@@ -208,14 +209,23 @@ public class ConvolutionalCodes {
             if (g.getIterations() >= g.getMaxIterations()) {
                 System.out.println("The iteration was terminated because it hit the max number of iterations allowed.");
             }
-            if (method == 2) {
-                return xG;
-            }
         }
 
         System.out.println("");
-        System.out.println("The Gauss-Seidel approximation has been returned to the console.");
-        return xG;
+
+        if (!xJTemp.equals(xJ) || !xGTemp.equals(xG)) {
+            System.out.println("The Y stream you entered was invalid.");
+            System.out.println("Y could not be decoded, as the entered Y cannot be generated from X.");
+        } else {
+            System.out.println("The Y steam was decoded successfully.");
+            System.out.print("The original x stream is: ");
+            if (method == 2 || method == 3) {
+                System.out.println(xG);
+            } else {
+                System.out.println(xJ);
+            }
+        }
+        System.out.println("");
     }
 
     public static String encode(int n) {

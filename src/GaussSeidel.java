@@ -138,5 +138,6 @@ public class GaussSeidel {
         Matrix c = new Matrix(testGuess);
         GaussSeidel testing = new GaussSeidel(a, c,  1.0/100000000.0);
         testing.gauss_seidel();
+        testing.print();
     }
 }
