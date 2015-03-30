@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -29,7 +30,10 @@ public class ConvolutionalCodes {
                 System.out.println("Decoding selected.");
                 while (invalid) {
                     System.out.println("");
-                    System.out.print("Enter the stream that you would like to decode: ");
+                    System.out.println("Enter the stream that you would like to decode.");
+                    System.out.println("Note that the length of the stream must be even.");
+                    System.out.println("Please enter the stream without commas nor brackets like this: 10011100");
+                    System.out.print("Stream: ");
                     String temp = kbReader.next();
                     System.out.println("");
                     if (temp.length() % 2 != 0) {
@@ -58,7 +62,51 @@ public class ConvolutionalCodes {
                     }
                 }
             } else if (fate == 3) {
-
+                boolean invalid = true;
+                System.out.println("Decoding selected.");
+                while (invalid) {
+                    System.out.println("Which iterative method would you like to test?");
+                    System.out.println("1. Jacobi");
+                    System.out.println("2. Gauss-Seidel");
+                    System.out.println("3. Both");
+                    System.out.print("Method: ");
+                    int method = kbReader.nextInt();
+                    if (method < 1 || method > 3) {
+                        System.out.println("Invalid method.");
+                    } else {
+                        System.out.println("");
+                        System.out.print("Enter your error tolerance (enter -1 for default, 10^-8): ");
+                        double tol = kbReader.nextDouble();
+                        if (tol <= 0) {
+                            tol = 1.0 / 100000000.0;
+                        }
+                        System.out.println("");
+                        System.out.println("The recorded tolerance is " + tol);
+                        System.out.println("");
+                        System.out.println("Please enter an augmented matrix into a .dat file named iterative.dat. ");
+                        System.out.println("Please enter your guess matrix, x0, into a .dat file named guess.dat.");
+                        System.out.println("Please place the file into the project root.");
+                        System.out.println("Enter any value to continue...(make sure to press enter afterwards): ");
+                        String text = kbReader.next();
+                        try {
+                            Matrix a = DatParser.datToMatrix(new File("iterative.dat"));
+                            Matrix x0 = DatParser.datToMatrix(new File("guess.dat"));
+                            if (method == 1 || method == 3) {
+                                Jacobi j = new Jacobi(a, x0, tol);
+                                j.jacobi();
+                                j.print();
+                            }
+                            if (method == 2 || method == 3) {
+                                GaussSeidel g = new GaussSeidel(a, x0, tol);
+                                g.gauss_seidel();
+                                g.print();
+                            }
+                            invalid = false;
+                        } catch (Exception e) {
+                            System.out.println("An error has occured. Please check your dat file.");
+                        }
+                    }
+                }
             } else if (fate == 4) {
                 System.out.println("fuck you");
                 keepLooping = false;
@@ -199,9 +247,6 @@ public class ConvolutionalCodes {
 
         System.out.print("The original x vector with specified length " + n + " was: {");
         for (int i = 0; i < x.getRowDimension() - 3; i++) {
-            if (i != 0) {
-                System.out.print(", ");
-            }
             System.out.print((int)x.get(i, 0));
         }
         System.out.print("}");
