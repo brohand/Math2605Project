@@ -13,6 +13,24 @@ public class solve_qr_b {
 
 
     }
+    public static Matrix houseSolve(Matrix Aug) {
+        Matrix b = new Matrix(Aug.getRowDimension(), 1);
+        Matrix A = new Matrix(Aug.getRowDimension(), Aug.getColumnDimension() - 1);
+
+        for(int row = 0; row < Aug.getRowDimension(); row++) {
+            for(int col = 0; col < Aug.getColumnDimension(); col++) {
+                if(col != Aug.getColumnDimension() - 1) {
+                    A.set(row, col, Aug.get(row, col));
+                } else {
+                    b.set(row, 0, Aug.get(row, col));
+                }
+            }
+        }
+
+        return houseSolve(A, b);
+
+
+    }
 
     public static Matrix givensSolve(Matrix A, Matrix b) {
         GivensQR qrA = new GivensQR(A);
@@ -24,35 +42,23 @@ public class solve_qr_b {
 
     }
 
-//    private Matrix solutionMatrix(Matrix A, double[] b) {
-//
-//    }
+    public static Matrix givensSolve(Matrix Aug) {
+        Matrix b = new Matrix(Aug.getRowDimension(), 1);
+        Matrix A = new Matrix(Aug.getRowDimension(), Aug.getColumnDimension() - 1);
 
-//    //For testing
-//    public static void main(String[] args) {
-//        double[][] testArr = {{4, 5},{0,-3}};
-//         Matrix testMat = Driver.createHilbert(4,4);
-//        testMat.print(4,4);
-//        System.out.println();
-//        testMat.transpose().print(4, 4);
-//        //System.out.println();
-//        //backSub(testMat,).print(4, 4);
-//        System.out.println();
-//
-//        double[][] b = {{0.0464159},{0.0464159},{0.0464159},{0.0464159}};
-//        Matrix QTb = Multiply.multiply(Householder.getQ(testMat).transpose(),new Matrix(b));
-//        Matrix correctSol = Householder.getR(testMat).solve(QTb);
-//        correctSol.print(1,4);
-//        System.out.println();
-//
-//        Matrix shitSol = BackwardSubstitution.backSub(Householder.getR(testMat), QTb);
-//        shitSol.print(1,4);
-//
-//
-//        Matrix nuthaShitSol = houseSolve(testMat, new Matrix(b));
-//        nuthaShitSol.print(1,4);
-//
-//
-//    }
+        for(int row = 0; row < Aug.getRowDimension(); row++) {
+            for(int col = 0; col < Aug.getColumnDimension(); col++) {
+                if(col != Aug.getColumnDimension() - 1) {
+                    A.set(row, col, Aug.get(row, col));
+                } else {
+                    b.set(row, 0, Aug.get(row, col));
+                }
+            }
+        }
+
+        return givensSolve(A, b);
+    }
+
+
 
 }

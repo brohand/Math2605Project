@@ -28,7 +28,7 @@ public class DatParser {
         for(int i = 0; i < m.length; i++) {
             String line = (String)lines.get(i);
             Scanner lineScanner = new Scanner(line);
-            List<Double> columns = new ArrayList<>();
+            List<Double> columns = new ArrayList();
             while(lineScanner.hasNextDouble()) {
                 columns.add(lineScanner.nextDouble());
             }

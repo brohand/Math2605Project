@@ -4,7 +4,11 @@
 
 import java.text.NumberFormat;
 import java.util.Scanner;
-import com.googlecode.charts4j.*;
+//import com.googlecode.charts4j.*;
+
+import com.xeiam.xchart.Chart;
+import com.xeiam.xchart.QuickChart;
+import com.xeiam.xchart.SwingWrapper;
 public class Driver {
     private static Scanner darkly = new Scanner(System.in);
     public static void main(String[] args) {
@@ -16,20 +20,26 @@ public class Driver {
         System.out.println("CHOOSE THY FATE");
         System.out.println("1. QR Visualization");
         System.out.println("2. LU Visualization");
+        System.out.println("3. Test HouseHolders");
+        System.out.println("4. Test Givens");
+
+
         int fate = darkly.nextInt();
-        if (fate == 1) {
-            qrVisualizer();
-        }else if (fate == 2) {
-            luVisualizer();
-        } else {
-            System.out.println("Fuck you");
+        switch(fate) {
+            case 1:
+                qrVisualizer();
+            case 2:
+                luVisualizer();
+            case 3:
+                System.out.println("Enter a valid .dat file (file should be placed in project root)");
+
+
         }
 
 
 
 
 
-        //LUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
 
     }
 
@@ -61,6 +71,7 @@ public class Driver {
         double[] qrhError = new double[19];
         double[] qrGError = new double[19];
         double[] hxError = new double[19];
+        double[] gxError = new double[19];
 
         int i = 0;
         for(int n = 2; n <= 20; n++) {
@@ -76,7 +87,7 @@ public class Driver {
             System.out.println("||QR - H|| = " + qrhErr);
 
             //Solution Error with HouseHolders
-            double hxErr = hilbert.times(xSol).minus(b).norm();
+            double hxErr = (hilbert.times(xSol).minus(b)).norm();
             System.out.println("------ ||HXsol - b||" + hxErr);
 
             System.out.println(":)");
@@ -91,32 +102,39 @@ public class Driver {
             System.out.println("||QR - H|| = " + qrGErr);
 
             //Solution Error with givens
-            hxErr = hilbert.times(xSol).minus(b).norm();
-            System.out.println("------ ||HXsol - b||" + hxErr);
+
+            double gxErr = ((hilbert.times(xSol).minus(b)).norm());
+            System.out.println("------ ||HXsol - b||" + gxErr);
+
+            //Graphin stuff
+            double scale = 1000000.0;
             x[i] = n;
-            qrhError[i] = qrhErr;
-            hxError[i] = hxErr;
+            qrGError[i] = qrGErr*scale;
+            qrhError[i] = qrhErr*scale;
+            hxError[i] = hxErr*scale;
+            gxError[i] = gxErr*scale;
             i++;
         }
-        DataUtil.scale(x);
-        Data X = new Data(x);
-        DataUtil.scale(qrhError);
-        Data qrhY = new Data(qrhError);
-        Data qrGY = new Data(qrGError);
-        Data hxY = new Data(hxError);
 
-        XYLine houseHolderLine = Plots.newXYLine(X, qrhY, Color.BLUE);
-        ScatterPlot houseChart = GCharts.newScatterPlot(houseHolderLine);
-        houseChart.setSize(400, 400);
-        System.out.println(houseChart.toURLString());
-        XYLine givensLine = Plots.newXYLine(X, qrGY, Color.RED);
-        XYLineChart givensChart = GCharts.newXYLineChart(givensLine);
-        givensChart.setSize(400, 400);
-        System.out.println(givensChart.toURLString());
-        XYLine solErrorLine = Plots.newXYLine(X, hxY, Color.GREEN);
-        XYLineChart solErrorChart = GCharts.newXYLineChart(solErrorLine);
-        solErrorChart.setSize(400, 400);
-        System.out.println(solErrorChart.toURLString());
+
+        Chart houseChart = QuickChart.getChart("QR Error of Hilbert Matrix with HouseHolders"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||QR - H||", x, qrhError);
+        //houseChart.getStyleManager().setYAxisLogarithmic(true);
+        new SwingWrapper(houseChart).displayChart();
+
+        Chart givensChart = QuickChart.getChart("QR Error of Hilbert Matrix with Givens"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||QR - H||", x, qrGError);
+        new SwingWrapper(givensChart).displayChart();
+
+        Chart hSolChart = QuickChart.getChart("Solution Error of Hilbert Matrix with HouseHolders"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||HXsol - b||", x, hxError);;
+        new SwingWrapper(hSolChart).displayChart();
+
+        Chart gSolChart = QuickChart.getChart("Solution Error of Hilbert Matrix with Givens"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||HXsol - b||", x, gxError);
+        new SwingWrapper(gSolChart).displayChart();
+
+
 
 
 
@@ -125,24 +143,45 @@ public class Driver {
     public static void luVisualizer() {
         System.out.println("LU Factorization for Hilbert Matricies");
         System.out.println("");
+
+        double[] x = new double[19];
+        double[] luError = new double[19];
+        double[] luSolError = new double[19];
+        int k = 0;
         for (int n = 2; n <= 20; n++) {
             Matrix hilbert = createHilbert(n, n);
             Matrix b = createB(n);
             LU lu = new LU(hilbert);
             lu.lu_fact();
-            System.out.println("The error for a hilbert matrix of size " + n + " is " + lu.getError());
+            double luErr = lu.getError();
+            System.out.println("The error for a hilbert matrix of size " + n + " is " + luErr);
             Matrix c = lu.solve(b);
             System.out.println("The solution, x, for LU is ");
             for (int i = 0; i < c.getRowDimension(); i++) {
                 System.out.println(c.get(i, 0));
             }
             System.out.print("The error, Hx - b, for LU is ");
-            Matrix e = hilbert.times(c).minus(b);
-            System.out.print(e.norm());
+            Matrix e = (hilbert.times(c).minus(b));
+            double luSolErr = e.norm();
+            System.out.print(luSolErr);
             System.out.println("");
             System.out.println("----------------------------------------");
             System.out.println("");
+            double luErrscale = 10000000000.0;
+            x[k] = n;
+            luError[k] = luErr*luErrscale;
+            luSolError[k] = luSolErr*luErrscale;
+            k++;
         }
+
+        Chart luChart = QuickChart.getChart("LU error of Hilbert FX"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||HXsol - b||", x, luError);
+        new SwingWrapper(luChart).displayChart();
+
+        Chart luSolChart = QuickChart.getChart("Solution Error of Hilbert Matrix with LU"
+                , "Hilbert size", "Error (*scaled by 10^6)", "||HXsol - b||", x, luSolError);
+        new SwingWrapper(luSolChart).displayChart();
+
     }
 
 

@@ -18,6 +18,8 @@ public class GivensQR {
         this.error = findError();
     }
 
+
+
     public Matrix findR(Matrix mat) {
         double r;
         double c;
