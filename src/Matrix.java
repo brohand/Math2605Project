@@ -5,11 +5,11 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Representation of a Matrix
- *
- * @author Patrick Tam, Jinsong Han/Aaron Andrews
- * @version 0.1
- */
+* Representation of a Matrix
+*
+* @author Patrick Tam, Jinsong Han/Aaron Andrews
+* @version 0.1
+*/
 public class Matrix {
 
     private double[][] m;

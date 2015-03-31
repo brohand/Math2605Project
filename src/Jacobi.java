@@ -116,6 +116,8 @@ public class Jacobi {
 
     public void print() {
         System.out.println("This is the Jacobi algorithm.");
+        System.out.println("The original matrix is :");
+        a.print(10, 5);
         if (iterations < maxIterations) {
             System.out.println("The final estimated x value is: ");
             for (int i = 0; i < x.getRowDimension(); i++) {

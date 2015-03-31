@@ -93,6 +93,8 @@ public class GaussSeidel {
 
     public void print() {
         System.out.println("This is the Gauss-Seidel algorithm.");
+        System.out.println("The original matrix is :");
+        a.print(10, 5);
         if (iterations < maxIterations) {
             System.out.println("The final estimated x value is: ");
             for (int i = 0; i < x.getRowDimension(); i++) {

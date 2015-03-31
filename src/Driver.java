@@ -51,8 +51,6 @@ public class Driver {
     public static void matrixMenu() throws FileNotFoundException{
         boolean loop = true;
 
-            System.out.println("Enter an augmented matrix as a .dat file");
-
                 //File augFile = new File(darkly.next());
 
         while(loop) {
@@ -62,77 +60,151 @@ public class Driver {
             System.out.println("2. Find Q and R of matrix with Givens");
             System.out.println("3. Ax = b with HouseHolders");
             System.out.println("4. Ax = b with Givens");
-            System.out.println("5. Enter different matrix");
-            System.out.println("6. Go back");
+            System.out.println("5. LU Decomposition of a matrix");
+            System.out.println("6. Solve LU b");
+            System.out.println("7. Go back");
 
-            switch(darkly.nextInt()) {
-                case 1:
-                    System.out.println("Enter a matrix as a .dat file");
-                    Matrix A = DatParser.datToMatrix(new File(darkly.next()));
-                    Matrix Q = Householder.getQ(A);
-                    Matrix R = Householder.getR(A);
-                    A.print(A.getRowDimension(), A.getColumnDimension());
-                    System.out.print(" = ");
-                    Q.print(Q.getRowDimension(), Q.getColumnDimension());
-                    System.out.print(" * ");
-                    R.print(R.getRowDimension(), R.getColumnDimension());
-                    System.out.println();
-                    System.out.print("Error = " + Householder.error(A));
-                    String pause = darkly.next();
-                    break;
-                case 2:
-                    System.out.println("Enter a matrix as a .dat file");
-                    A = DatParser.datToMatrix(new File(darkly.next()));
-                    GivensQR qrA = new GivensQR(A);
-                    Q = qrA.Q;
-                    R = qrA.R;
-                    A.print(A.getRowDimension(), A.getColumnDimension());
-                    System.out.print(" = ");
-                    Q.print(Q.getRowDimension(), Q.getColumnDimension());
-                    System.out.print(" * ");
-                    R.print(R.getRowDimension(), R.getColumnDimension());
-                    System.out.println();
-                    System.out.print("Error = " + qrA.getError());
-                    pause = darkly.next();
-                    break;
-                case 3:
+            String pause;
 
-                    System.out.println("Enter an augmented matrix as a .dat file");
-                    File augFile = new File(darkly.next());
-                    A = augSplitA(augFile);
-                    Matrix b = augSplitb(augFile);
-                    Matrix sol = solve_qr_b.houseSolve(A, b);
-                    A.print(A.getRowDimension(), A.getColumnDimension());
-                    System.out.print(" * ");
-                    sol.print(sol.getRowDimension(), 0);
-                    System.out.print(" = ");
-                    b.print(b.getRowDimension(), 0);
-                    System.out.print("Error = " + A.times(sol).minus(b).norm());
-                    pause = darkly.next();
-                    break;
-                case 4:
-                    System.out.println("Enter an augmented matrix as a .dat file");
-                    augFile = new File(darkly.next());
-                    A = augSplitA(augFile);
-                    b = augSplitb(augFile);
-                    sol = solve_qr_b.givensSolve(A, b);
-                    A.print(A.getRowDimension(), A.getColumnDimension());
-                    System.out.print(" * ");
-                    sol.print(sol.getRowDimension(), 0);
-                    System.out.print(" = ");
-                    b.print(b.getRowDimension(), 0);
-                    System.out.print("Error = " + A.times(sol).minus(b).norm());
-                    pause = darkly.next();
-                    break;
-                case 5:
-                    loop = false;
-                    matrixMenu();
-                case 6:
-                    loop = false;
-                    break;
+            try {
+                switch (darkly.nextInt()) {
+                    case 1:
+                        System.out.println("Please enter a matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        Matrix A = DatParser.datToMatrix(new File(darkly.next()));
+                        System.out.println("QR Calculation of a matrix with HouseHolders is in progress.");
+                        Matrix Q = Householder.getQ(A);
+                        Matrix R = Householder.getR(A);
+                        System.out.println("The original matrix is: ");
+                        A.print(10, 5);
+                        System.out.print("The Q matrix : ");
+                        Q.print(10, 5);
+                        System.out.print("The R matrix is: ");
+                        R.print(10, 5);
+                        System.out.print("Error (QR - H) = " + Householder.error(A));
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 2:
+                        System.out.println("Please enter a matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        A = DatParser.datToMatrix(new File(darkly.next()));
+                        System.out.println("QR Calculation of a matrix with Givens is in progress.");
+                        GivensQR qrA = new GivensQR(A);
+                        Q = qrA.Q;
+                        R = qrA.R;
+                        System.out.println("The original matrix is: ");
+                        A.print(10, 5);
+                        System.out.print("The Q matrix : ");
+                        Q.print(10, 5);
+                        System.out.print("The R matrix is: ");
+                        R.print(10, 5);
+                        System.out.print("Error (QR - H) = " + qrA.getError());
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 3:
+                        System.out.println("Please enter an augmented matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        File augFile = new File(darkly.next());
+                        A = augSplitA(augFile);
+                        System.out.println("Ax=b Calculation of a matrix with Householders is in progress.");
+                        Matrix b = augSplitb(augFile);
+                        Matrix sol = solve_qr_b.houseSolve(A, b);
+                        System.out.println("The original matrix, A, is: ");
+                        A.print(10, 5);
+                        System.out.print("The solved vector, x, is: ");
+                        sol.print(10, 10);
+                        System.out.print("The b vector is: ");
+                        b.print(10, 10);
+                        System.out.print("Error (Hx - b) = " + A.times(sol).minus(b).norm());
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 4:
+                        System.out.println("Please enter an augmented matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        augFile = new File(darkly.next());
+                        A = augSplitA(augFile);
+                        b = augSplitb(augFile);
+                        System.out.println("Ax=b Calculation of a matrix with Givens is in progress.");
+                        sol = solve_qr_b.givensSolve(A, b);
+                        System.out.println("The original matrix, A, is: ");
+                        A.print(10, 5);
+                        System.out.print("The solved vector, x, is: ");
+                        sol.print(10, 10);
+                        System.out.print("The b vector is: ");
+                        b.print(10, 10);
+                        System.out.print("Error (Hx - b) = " + A.times(sol).minus(b).norm());
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 5:
+                        System.out.println("Please enter a matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        A = DatParser.datToMatrix(new File(darkly.next()));
+                        System.out.println("LU Decomposition of a matrix is in progress.");
+                        LU lu = new LU(A);
+                        lu.lu_fact();
+                        Matrix L = lu.getLower();
+                        Matrix U = lu.getUpper();
+                        System.out.println("The original matrix is: ");
+                        A.print(10, 5);
+                        System.out.print("The L matrix : ");
+                        L.print(10, 5);
+                        System.out.print("The U matrix is: ");
+                        U.print(10, 5);
+                        System.out.print("Error (LU - H) = " + lu.getError());
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 6:
+                        System.out.println("Please enter an augmented matrix as a .dat file into the project root.");
+                        System.out.println("Enter the full name of the file, with the .dat extension.");
+                        augFile = new File(darkly.next());
+                        A = augSplitA(augFile);
+                        b = augSplitb(augFile);
+                        System.out.println("Solve LU b is in progress.");
+                        LU luSolve = new LU(A);
+                        luSolve.lu_fact();
+                        sol = luSolve.solve(b);
+                        System.out.println("The original matrix, A, is: ");
+                        A.print(10, 5);
+                        System.out.print("The solved vector, x, is: ");
+                        sol.print(10, 10);
+                        System.out.print("The b vector is: ");
+                        b.print(10, 10);
+                        System.out.print("Error (Hx - b) = " + A.times(sol).minus(b).norm());
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.print("Enter any letter to continue... ");
+                        pause = darkly.next();
+                        System.out.println("");
+                        break;
+                    case 7:
+                        loop = false;
+                        break;
 
 
-
+                }
+            } catch (Exception e) {
+                System.out.println("An error has occurred. Please check your .dat file.");
+                loop = false;
             }
         }
 
@@ -214,7 +286,7 @@ public class Driver {
             Matrix xSol = solve_qr_b.houseSolve(hilbert, b);
             System.out.println("For Hilbert of size " + n + " With HouseHolders:");
             System.out.println("Xsol = ");
-            xSol.print(n, 1);
+            xSol.print(10, 10);
             System.out.print("------");
             double qrhErr = Householder.error(hilbert);
             System.out.println("||QR - H|| = " + qrhErr);
@@ -229,7 +301,7 @@ public class Driver {
             System.out.println("For Hilbert of size " + n + " With Givens:");
             xSol = solve_qr_b.givensSolve(hilbert, b);
             System.out.println("Xsol = ");
-            xSol.print(n, 1);
+            xSol.print(10, 10);
             System.out.print("------");
             double qrGErr = qrA.getError();
             System.out.println("||QR - H|| = " + qrGErr);

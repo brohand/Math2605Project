@@ -84,26 +84,32 @@ public class ConvolutionalCodes {
                         System.out.println("The recorded tolerance is " + tol);
                         System.out.println("");
                         System.out.println("Please enter an augmented matrix into a .dat file named iterative.dat. ");
-                        System.out.println("Please enter your guess matrix, x0, into a .dat file named guess.dat.");
+                        System.out.println("Please enter your guess vector, x0, into a .dat file named guess.dat.");
+                        System.out.println("Make sure to enter the guess vector vertically! (i.e. dimension of n x 1");
                         System.out.println("Please place the file into the project root.");
-                        System.out.println("Enter any value to continue...(make sure to press enter afterwards): ");
+                        System.out.print("Enter any letter to continue... ");
                         String text = kbReader.next();
+                        System.out.println("");
                         try {
                             Matrix a = DatParser.datToMatrix(new File("iterative.dat"));
                             Matrix x0 = DatParser.datToMatrix(new File("guess.dat"));
                             if (method == 1 || method == 3) {
+                                System.out.println("-----------------------");
                                 Jacobi j = new Jacobi(a, x0, tol);
                                 j.jacobi();
                                 j.print();
                             }
                             if (method == 2 || method == 3) {
+                                System.out.println("-----------------------");
                                 GaussSeidel g = new GaussSeidel(a, x0, tol);
                                 g.gauss_seidel();
                                 g.print();
                             }
                             invalid = false;
                         } catch (Exception e) {
-                            System.out.println("An error has occured. Please check your dat file.");
+                            System.out.println("An error has occurred. Please check your dat file.");
+                            System.out.println(e.getMessage());
+                            invalid = false;
                         }
                     }
                 }
@@ -120,6 +126,7 @@ public class ConvolutionalCodes {
 
     public static void decode(String n, int method, double tol) {
         System.out.println("The program will now attempt to decode the sequence, " + n + ".");
+        System.out.println(n.length());
         Matrix y0 = new Matrix(n.length() / 2, 1);
         Matrix y1 = new Matrix(n.length() / 2, 1);
         String firstY = "";
@@ -133,7 +140,7 @@ public class ConvolutionalCodes {
                 secondY = secondY + n.charAt(i);
             }
         }
-
+        System.out.println(y0.getRowDimension());
         System.out.println("The decoded Y0 is: " + firstY);
         System.out.println("The decoded Y1 is: " + secondY);
 
@@ -143,6 +150,8 @@ public class ConvolutionalCodes {
         for (int i = 0; i < x0.getRowDimension(); i++) {
             x0.set(i, 0, 0);
         }
+
+        a0.print(2, 0);
 
         String xJ = "";
         String xJTemp = "";
@@ -255,6 +264,16 @@ public class ConvolutionalCodes {
             y1Temp[i][0] = y1Temp[i][0] % 2;
         }
 
+        System.out.print("y0 is: ");
+        for (int i = 0; i < y0.getRowDimension(); i++) {
+            System.out.print((int)y0.get(i, 0));
+        }
+        System.out.println("");
+        System.out.print("y1 is: ");
+        for (int i = 0; i < y1.getRowDimension(); i++) {
+            System.out.print((int)y1.get(i, 0));
+        }
+        System.out.println("");
         System.out.print("The original x vector with specified length " + n + " was: {");
         for (int i = 0; i < x.getRowDimension() - 3; i++) {
             System.out.print((int)x.get(i, 0));
