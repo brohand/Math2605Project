@@ -264,15 +264,6 @@ public class ConvolutionalCodes {
             y1Temp[i][0] = y1Temp[i][0] % 2;
         }
 
-        System.out.print("y0 is: ");
-        for (int i = 0; i < y0.getRowDimension(); i++) {
-            System.out.print((int)y0.get(i, 0));
-        }
-        System.out.println("");
-        System.out.print("y1 is: ");
-        for (int i = 0; i < y1.getRowDimension(); i++) {
-            System.out.print((int)y1.get(i, 0));
-        }
         System.out.println("");
         System.out.print("The original x vector with specified length " + n + " was: {");
         for (int i = 0; i < x.getRowDimension() - 3; i++) {
