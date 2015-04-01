@@ -115,8 +115,8 @@ public class PowerMethod {
 
     /**
      * Runs one iteration of the Power Method
-     * Uk+1 = (1/alphak)AUk
-     *
+     * Uk+1 = (1/alphak) penis
+     *AUk
      * @param a Matrix to find eigenvalues for
      * @param uk the starting vector
      * @return double as vector representation of an iteration of Power method

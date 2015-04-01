@@ -129,6 +129,19 @@ public class Vector {
     }
 
     /**
+     * Gets the sum of a Vector
+     *
+     * @return sum of the components of the Vector
+     */
+    public double sum() {
+        double sum = 0;
+        for (int i = 0; i < v.length; i++) {
+            sum += v[i];
+        }
+        return sum;
+    }
+
+    /**
      * Gets backing array
      *
      * @return double array representation of vector
