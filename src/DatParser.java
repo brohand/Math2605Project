@@ -18,7 +18,7 @@ public class DatParser {
      */
     public static Matrix datToMatrix(File a) throws FileNotFoundException{
         try {
-            LinkedList<String> lines = new LinkedList<>();
+            LinkedList<String> lines = new LinkedList();
             Scanner file = new Scanner(a);
             while (file.hasNextLine()) {
                 lines.add(file.nextLine());

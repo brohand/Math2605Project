@@ -44,6 +44,7 @@ public class GivensQR {
                     if (i > j) {
                         newG[i][j] = s;
                     } else {
+                        newG[j][i] *= -1;
                         newG[i][j] = -1 * s;
                     }
 
