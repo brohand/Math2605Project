@@ -39,9 +39,8 @@ the guess vector is entered in vertically, like:
 0.
 0.
 
-Once all is completed, enter any letter to continue. The iterative methods will run and then output their solution vector, as well as how many iterations it took.
+Once all has been completed, enter any letter to continue. The iterative methods will run and then output their solution vector, as well as how many iterations it took.
 3. Decoding Problem. To test the decoding function, run the driver, and select option 2. Enter the stream that you would like to decode. Choose the iterative 
 method that you would like to use to decode, and then enter the error tolerance (-1 for default value of 10^-8). The entered Y stream will then attempt to be
 decoded. Note that the entered Y stream must be even in order to proceed.
 4. Discussion. This can be found within the "docs" folder of the project. For the answers to the questions specifically, see the "discussion" section of the report.
-
